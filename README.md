@@ -1,37 +1,37 @@
 # SMS Gateway Pro 🚀
 
-Professional SMS management and automation software built with **.NET 10 WPF** and **SQLite**. Designed for high-performance SMS broadcasting through GSM modems using AT commands.
+**SMS Gateway Pro** - bu .NET 10 WPF va SQLite texnologiyalari asosida yaratilgan, professional darajadagi SMS boshqaruv va avtomatlashtirish dasturi. Dastur GSM modemlar orqali AT buyruqlari yordamida yuqori tezlikda SMS xabarlarini yuborish uchun mo'ljallangan.
 
-## ✨ Features
+## ✨ Imkoniyatlar
 
-- **Premium Dark Interface**: Modern Windows 11 style UI with Orange & Blue palette.
-- **Group Management**: Organize contacts into logical groups.
-- **Excel Integration**: Import thousands of contacts from Excel files with one click.
-- **Template System**: Save and reuse message templates for quick sending.
-- **Bulk SMS**: High-speed asynchronous sending with real-time progress tracking.
-- **SMS History**: Detailed logs of sent and failed messages for every contact.
-- **Modem Control**: AT command integration with memory clearing and connection testing.
-- **Security**: Robust data management using SQLite with unique phone constraints.
+- **Premium Dark Interfeys**: Windows 11 uslubidagi zamonaviy va qulay dizayn (To'q ko'k va to'q sariq ranglar palitrasi).
+- **Guruhlarni boshqarish**: Kontaktlarni mantiqiy guruhlarga ajratish va tartibga solish.
+- **Excel Integratsiyasi**: Minglab kontaktlarni bitta tugma orqali Excel faylidan tezkor import qilish.
+- **Shablonlar tizimi**: Ko'p ishlatiladigan xabar matnlarini saqlab qo'yish va qayta ishlatish.
+- **Ommaviy SMS yuborish**: Real vaqt rejimida yuborish jarayonini kuzatish (Progress tracking) va yuqori tezlikdagi asinxron yuborish.
+- **SMS Tarixi (History)**: Har bir kontakt uchun yuborilgan va yuborilmagan xabarlarning batafsil loglari.
+- **Modem boshqaruvi**: AT buyruqlari orqali modem xotirasini tozalash va ulanishni tekshirish.
+- **Xavfsizlik**: SQLite ma'lumotlar bazasida telefon raqamlarining unikal bo'lishini ta'minlash.
 
-## 🛠 Technology Stack
+## 🛠 Texnologiyalar steki
 
 - **Framework**: .NET 10.0 (WPF)
 - **Pattern**: MVVM (Model-View-ViewModel)
 - **Database**: SQLite (Microsoft.Data.Sqlite)
-- **Excel**: ClosedXML for high-speed parsing.
-- **Hardware**: SerialPort (System.IO.Ports) for GSM Modem communication.
+- **Excel**: ClosedXML (Yuqori tezlikdagi tahlil uchun).
+- **Hardware**: SerialPort (GSM Modem bilan aloqa uchun).
 
-## 📸 Screenshots
+## 📸 Skrinshotlar
 
-*(Add your screenshots here to showcase the premium UI)*
+*(Dasturning premium interfeysini ko'rsatish uchun bu yerga rasm qo'shing)*
 
-## 🚀 Quick Start
+## 🚀 Tezkor ishga tushirish
 
-1. Clone the repository.
-2. Ensure you have **.NET 10 SDK** installed.
-3. Open the project in Visual Studio 2022 or VS Code.
-4. Build and Run: `dotnet run`
+1. Repository-ni klon qiling.
+2. Kompyuteringizda **.NET 10 SDK** o'rnatilganligiga ishonch hosil qiling.
+3. Loyihani Visual Studio yoki VS Code-da oching.
+4. Build qiling va ishga tushiring: `dotnet run`
 
-## 📄 License
+## 📄 Litsenziya
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+Ushbu loyiha MIT litsenziyasi ostida tarqatiladi.

@@ -1,61 +1,61 @@
-# ⚙️ Setup & Installation Guide
+# ⚙️ O'rnatish va Sozlash Qo'llanmasi
 
-Follow these steps to set up and run **SMS Gateway Pro** on your machine.
+**SMS Gateway Pro** dasturini kompyuteringizga o'rnatish va ishga tushirish uchun quyidagi bosqichlarni bajaring.
 
-## 📋 Prerequisites
+## 📋 Talablar
 
-- **Operating System**: Windows 10/11
+- **Operatsion tizim**: Windows 10/11
 - **SDK**: [.NET 10.0 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
-- **Hardware**: GSM Modem (USB Dongle or Serial Modem)
-- **Drivers**: Ensure your modem drivers are installed and a COM port is assigned.
+- **Uskuna (Hardware)**: GSM Modem (USB Dongle yoki Serial Modem)
+- **Drayverlar**: Modem drayverlari o'rnatilgan bo'lishi va COM port tayinlangan bo'lishi shart.
 
-## 🚀 Installation Steps
+## 🚀 O'rnatish bosqichlari
 
-1. **Clone the Project**:
+1. **Loyihani yuklab olish**:
    ```bash
    git clone https://github.com/IslamAbdurahman/SmsGatewayWpf.git
    cd SmsGatewayApp
    ```
 
-2. **Restore Dependencies**:
+2. **Kutubxonalarni tiklash**:
    ```bash
    dotnet restore
    ```
 
-3. **Database Initialization**:
-   The application automatically creates and initializes the `sms_gateway.db` file on its first run. No manual SQL execution is required.
+3. **Ma'lumotlar bazasi**:
+   Dastur birinchi marta ishga tushganda `sms_gateway.db` faylini avtomatik yaratadi. Hech qanday qo'lda SQL kod ishlatish shart emas.
 
-4. **Build the Application**:
+4. **Loyihani yig'ish (Build)**:
    ```bash
    dotnet build
    ```
 
-5. **Run the App**:
+5. **Ishga tushirish**:
    ```bash
    dotnet run
    ```
 
-## 📱 Hardware Configuration
+## 📱 Uskunani (Modemni) sozlash
 
-1. Connect your GSM Modem to a USB port.
-2. Open **Device Manager** -> **Ports (COM & LPT)** to find your modem's COM port (e.g., COM3).
-3. In the app, navigate to the **SMS Sending** page.
-4. Click the **Refresh** button () to see available ports.
-5. Select your port and click **Test Connection**.
-6. Use **Clear Memory** if your modem's SIM storage is full.
+1. GSM Modemni USB portga ulang.
+2. **Device Manager** -> **Ports (COM & LPT)** bo'limidan modemingiz qaysi portga ulanganini aniqlang (masalan, COM3).
+3. Dasturda **SMS Sending** sahifasiga o'ting.
+4. **Refresh** () tugmasini bosing va o'z portingizni tanlang.
+5. **Test Connection** tugmasi orqali ulanishni tekshiring.
+6. Agar SIM-karta xotirasi to'lib qolsa, **Clear Memory** tugmasidan foydalaning.
 
-## 📊 Excel Import Format
+## 📊 Excel Import formati
 
-To import contacts, your Excel file should have the following column structure (headers are optional):
-- **Column A**: Phone Number (e.g., +998901234567)
-- **Column B**: Contact Name (Optional)
+Kontaktlarni import qilish uchun Excel faylingiz quyidagi ustunlarga ega bo'lishi kerak:
+- **A ustuni**: Telefon raqami (masalan, +998901234567)
+- **B ustuni**: Ism (ixtiyoriy)
 
-## 🔧 Troubleshooting
+## 🔧 Muammolarni bartaraf etish
 
-- **Port Busy**: Ensure no other software (like another SMS app or hyperterminal) is using the COM port.
-- **Access Denied**: Run the application as Administrator if you encounter permission issues with Serial Ports.
-- **DB Lock**: If the app crashes with a database lock, ensure only one instance of the app is running.
+- **Port Busy**: Port boshqa dastur tomonidan band emasligiga ishonch hosil qiling.
+- **Access Denied**: Agar Serial Portga ulanishda xatolik bo'lsa, dasturni Administrator nomidan ishga tushiring.
+- **DB Lock**: Agar ma'lumotlar bazasi band bo'lsa, dasturning faqat bitta nusxasi ishlayotganini tekshiring.
 
-## 🛠 Support
+## 🛠 Yordam
 
-For technical support or feature requests, please open an issue in the repository.
+Texnik yordam yoki yangi imkoniyatlar bo'yicha takliflar bo'lsa, repository-da "Issue" qoldiring.
