@@ -1,0 +1,426 @@
+<Window x:Class="SmsGatewayApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:SmsGatewayApp.ViewModels"
+        xmlns:helpers="clr-namespace:SmsGatewayApp.Helpers"
+        mc:Ignorable="d"
+        Title="SMS Gateway Pro" Height="750" Width="1200"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource BackgroundBrush}"
+        Foreground="{StaticResource TextBrush}">
+    
+    <Window.DataContext>
+        <vm:MainViewModel/>
+    </Window.DataContext>
+
+    <Window.Resources>
+        <helpers:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
+        <helpers:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Sidebar -->
+        <Border Grid.Column="0" Background="{StaticResource SecondaryBrush}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel VerticalAlignment="Center" Margin="20,0">
+                    <TextBlock Text="SMS GATEWAY" Foreground="White" FontSize="20" FontWeight="Bold"/>
+                    <TextBlock Text="Professional Edition" Foreground="{StaticResource TextDimBrush}" FontSize="12"/>
+                </StackPanel>
+
+                <StackPanel Grid.Row="1" Margin="0,20">
+                    <RadioButton Style="{StaticResource SidebarButton}" IsChecked="True" 
+                                 Command="{Binding NavigateCommand}" CommandParameter="Dashboard">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="" FontFamily="Segoe MDL2 Assets" Margin="0,0,15,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="Dashboard" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton Style="{StaticResource SidebarButton}" 
+                                 Command="{Binding NavigateCommand}" CommandParameter="Sending">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="" FontFamily="Segoe MDL2 Assets" Margin="0,0,15,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="SMS Sending" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton Style="{StaticResource SidebarButton}" 
+                                 Command="{Binding NavigateCommand}" CommandParameter="Import">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="" FontFamily="Segoe MDL2 Assets" Margin="0,0,15,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="Contacts &amp; Import" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton Style="{StaticResource SidebarButton}" 
+                                 Command="{Binding NavigateCommand}" CommandParameter="Templates">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="" FontFamily="Segoe MDL2 Assets" Margin="0,0,15,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="Templates" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </RadioButton>
+                </StackPanel>
+
+                <Border Grid.Row="2" Background="#1A1A1A" Padding="15">
+                    <TextBlock Text="{Binding StatusMessage}" Foreground="#AAA" FontSize="11" TextWrapping="Wrap"/>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- Main Content Area -->
+        <Grid Grid.Column="1" Margin="30">
+            
+            <!-- Dashboard View -->
+            <Grid Visibility="{Binding CurrentView, Converter={StaticResource StringToVisibilityConverter}, ConverterParameter=Dashboard}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Dashboard" Style="{StaticResource HeaderLabel}"/>
+
+                <UniformGrid Grid.Row="1" Columns="3" VerticalAlignment="Top" Margin="0,10,0,30">
+                    <Border Style="{StaticResource CardBorder}" Margin="0,0,20,0">
+                        <StackPanel>
+                            <TextBlock Text="Total Sent" Foreground="{StaticResource TextDimBrush}" FontSize="13" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding TotalSent}" FontSize="42" FontWeight="ExtraBold" Margin="0,5" Foreground="{StaticResource PrimaryBrush}"/>
+                            <ProgressBar Value="{Binding TotalSent}" Maximum="{Binding TotalSms}" Height="3" Foreground="{StaticResource PrimaryBrush}" Background="#1AFFFFFF" BorderThickness="0"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource CardBorder}" Margin="0,0,20,0">
+                        <StackPanel>
+                            <TextBlock Text="Total Failed" Foreground="{StaticResource TextDimBrush}" FontSize="13" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding TotalFailed}" FontSize="42" FontWeight="ExtraBold" Margin="0,5" Foreground="{StaticResource AccentBrush}"/>
+                            <ProgressBar Value="{Binding TotalFailed}" Maximum="{Binding TotalSms}" Height="3" Foreground="{StaticResource AccentBrush}" Background="#1AFFFFFF" BorderThickness="0"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource CardBorder}">
+                        <StackPanel>
+                            <TextBlock Text="Groups" Foreground="{StaticResource TextDimBrush}" FontSize="13" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding Groups.Count}" FontSize="42" FontWeight="ExtraBold" Margin="0,5" Foreground="White"/>
+                            <Rectangle Height="3" Fill="#1AFFFFFF"/>
+                        </StackPanel>
+                    </Border>
+                </UniformGrid>
+            </Grid>
+
+            <!-- Sending View -->
+            <Grid Visibility="{Binding CurrentView, Converter={StaticResource StringToVisibilityConverter}, ConverterParameter=Sending}">
+                <StackPanel>
+                    <TextBlock Text="SMS Sending" Style="{StaticResource HeaderLabel}"/>
+                    
+                    <Border Style="{StaticResource CardBorder}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Margin="0,0,20,20">
+                                <ComboBox ItemsSource="{Binding Groups}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedGroup}" Height="45" helpers:TextBoxHelper.Placeholder="Select Group"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1" Margin="0,0,0,20">
+                                <ComboBox ItemsSource="{Binding Templates}" DisplayMemberPath="Title" SelectedItem="{Binding SelectedTemplate}" Height="45" helpers:TextBoxHelper.Placeholder="Select Template"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="1" Margin="0,0,20,20">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <ComboBox ItemsSource="{Binding AvailablePorts}" DisplayMemberPath="DisplayName" SelectedItem="{Binding SelectedPort}" Height="45" Margin="0,0,5,0" helpers:TextBoxHelper.Placeholder="Select Modem Port"/>
+                                        <Button Grid.Column="1" Content="Test" Width="60" Style="{StaticResource ModernButton}" Padding="5" Command="{Binding TestConnectionCommand}" ToolTip="Test connection"/>
+                                        <Button Grid.Column="2" Content="Clear Memory" Width="110" Margin="5,0,0,0" Style="{StaticResource DangerButton}" Padding="5" Command="{Binding ClearModemMemoryCommand}"/>
+                                        <Button Grid.Column="3" Content="" FontFamily="Segoe MDL2 Assets" Width="40" Margin="5,0,0,0" Command="{Binding RefreshPortsCommand}"/>
+                                    </Grid>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Margin="0,20,0,0">
+                                <Button Content="Start Sending" Style="{StaticResource ModernButton}" 
+                                         Background="{StaticResource AccentGradient}"
+                                         Command="{Binding StartSendingCommand}" 
+                                         Visibility="{Binding IsSending, Converter={StaticResource StringToVisibilityConverter}, ConverterParameter=!True}"/>
+                                
+                                <Grid Margin="0,20,0,0" Visibility="{Binding IsSending, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <ProgressBar Value="{Binding ProgressValue}" Height="10" Foreground="{StaticResource PrimaryBrush}" Background="#EEE" BorderThickness="0"/>
+                                    <TextBlock Grid.Row="1" Text="{Binding ProgressValue, StringFormat={}{0}%}" HorizontalAlignment="Right" Margin="0,5,0,0" FontSize="12" Foreground="{StaticResource TextDimBrush}"/>
+                                </Grid>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </StackPanel>
+            </Grid>
+
+            <!-- Import View -->
+            <Grid Visibility="{Binding CurrentView, Converter={StaticResource StringToVisibilityConverter}, ConverterParameter=Import}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+                <TextBlock Text="Import &amp; Manage Contacts" Style="{StaticResource HeaderLabel}"/>
+
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="300"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Groups Column -->
+                    <Grid Margin="0,0,20,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Border Style="{StaticResource CardBorder}" Margin="0,0,0,15">
+                            <StackPanel>
+                                <TextBlock Text="Create New Group" FontWeight="Bold" Margin="0,0,0,10"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Text="{Binding NewGroupName, UpdateSourceTrigger=PropertyChanged}" helpers:TextBoxHelper.Placeholder="Group Name"/>
+                                    <Button Grid.Column="1" Content="" FontFamily="Segoe MDL2 Assets" Width="40" Margin="5,0,0,0" Command="{Binding CreateGroupCommand}"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Grid.Row="1" Style="{StaticResource CardBorder}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="Groups" FontWeight="Bold" Margin="0,0,0,10"/>
+                                <ListBox Grid.Row="1" ItemsSource="{Binding Groups}" SelectedItem="{Binding SelectedGroup}" BorderThickness="0" Background="Transparent">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Padding="5">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <StackPanel>
+                                                        <TextBlock Text="{Binding Name}" FontWeight="SemiBold"/>
+                                                        <TextBlock Text="{Binding CreatedAt, StringFormat=\{0:d\}}" FontSize="11" Foreground="{StaticResource TextDimBrush}"/>
+                                                    </StackPanel>
+                                                    <Button Grid.Column="1" Content="" FontFamily="Segoe MDL2 Assets" Background="Transparent" BorderThickness="0" Margin="5,0" 
+                                                            Command="{Binding DataContext.EditGroupCommand, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding}"/>
+                                                    <Button Grid.Column="2" Content="" FontFamily="Segoe MDL2 Assets" Background="Transparent" BorderThickness="0" Foreground="Red"
+                                                            Command="{Binding DataContext.DeleteGroupCommand, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding}"/>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </Grid>
+                        </Border>
+                    </Grid>
+
+                    <!-- Detail Column -->
+                    <Border Grid.Column="1" Style="{StaticResource CardBorder}" Visibility="{Binding SelectedGroup, Converter={StaticResource NullToVisibilityConverter}}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                                <TextBlock Text="Group:" FontSize="18" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                <TextBlock Text="{Binding SelectedGroup.Name}" FontSize="18" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource PrimaryBrush}"/>
+                            </StackPanel>
+
+                            <Grid Grid.Row="1" Margin="0,0,0,20">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Manual Entry -->
+                                <Border Background="#0DFFFFFF" CornerRadius="8" Padding="15" Margin="0,0,10,0">
+                                    <StackPanel>
+                                        <TextBlock Text="Add Contact Manually" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox Text="{Binding NewContactName, UpdateSourceTrigger=PropertyChanged}" helpers:TextBoxHelper.Placeholder="Contact Name" Margin="0,0,5,0"/>
+                                            <TextBox Grid.Column="1" Text="{Binding NewContactPhone, UpdateSourceTrigger=PropertyChanged}" helpers:TextBoxHelper.Placeholder="Phone Number"/>
+                                            <Button Grid.Column="2" Content="" FontFamily="Segoe MDL2 Assets" Width="40" Margin="5,0,0,0" Command="{Binding AddContactCommand}"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Excel Import -->
+                                <Border Grid.Column="1" Background="#0DFFFFFF" CornerRadius="8" Padding="15" Margin="10,0,0,0">
+                                    <StackPanel>
+                                        <TextBlock Text="Import from Excel" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                                        <Button Content="Choose Excel File" Style="{StaticResource ModernButton}" Command="{Binding ImportExcelCommand}"/>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+
+                            <!-- Contacts List -->
+                            <Grid Grid.Row="2">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="CONTACTS" FontSize="14" FontWeight="ExtraBold" Foreground="{StaticResource PrimaryBrush}" Margin="0,10,0,15"/>
+                                <DataGrid Grid.Row="1" ItemsSource="{Binding SelectedGroupContacts}" SelectedItem="{Binding SelectedContact}"
+                                          AutoGenerateColumns="False" CanUserAddRows="False"
+                                          Background="Transparent" BorderThickness="0" 
+                                          Foreground="{StaticResource TextBrush}" FontSize="14" RowHeight="55">
+                                    <DataGrid.Resources>
+                                        <Style TargetType="DataGridColumnHeader">
+                                            <Setter Property="Background" Value="Transparent"/>
+                                            <Setter Property="Foreground" Value="{StaticResource TextDimBrush}"/>
+                                            <Setter Property="FontWeight" Value="Bold"/>
+                                            <Setter Property="Padding" Value="10,10,10,10"/>
+                                            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                                            <Setter Property="BorderBrush" Value="#2AFFFFFF"/>
+                                            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                                        </Style>
+                                        <Style TargetType="DataGridRow">
+                                            <Setter Property="Background" Value="Transparent"/>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#1AFFFFFF"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </DataGrid.Resources>
+                                    <DataGrid.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="History" Command="{Binding ViewHistoryCommand}" CommandParameter="{Binding SelectedContact}">
+                                                <MenuItem.Icon>
+                                                    <TextBlock Text="" FontFamily="Segoe MDL2 Assets"/>
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                        </ContextMenu>
+                                    </DataGrid.ContextMenu>
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="150"/>
+                                        <DataGridTextColumn Header="Phone" Binding="{Binding Phone}" Width="*"/>
+                                        <DataGridTemplateColumn Width="80">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Button Content="" FontFamily="Segoe MDL2 Assets" Background="Transparent" BorderThickness="0" Margin="0,0,10,0"
+                                                                Command="{Binding DataContext.EditContactCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}"/>
+                                                        <Button Content="" FontFamily="Segoe MDL2 Assets" Background="Transparent" BorderThickness="0" Foreground="Red"
+                                                                Command="{Binding DataContext.DeleteContactCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}"/>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </Grid>
+                    </Border>
+                    
+                    <!-- Empty State -->
+                    <Border Grid.Column="1" Style="{StaticResource CardBorder}" Visibility="{Binding SelectedGroup, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=!True}">
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <TextBlock Text="" FontFamily="Segoe MDL2 Assets" FontSize="64" Foreground="#DDD" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+                            <TextBlock Text="Select a group to manage contacts" FontSize="16" Foreground="{StaticResource TextDimBrush}"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Grid>
+
+            <!-- Templates View -->
+            <Grid Visibility="{Binding CurrentView, Converter={StaticResource StringToVisibilityConverter}, ConverterParameter=Templates}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+                <TextBlock Text="SMS Templates" Style="{StaticResource HeaderLabel}"/>
+                
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="350"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Templates List -->
+                    <Border Style="{StaticResource CardBorder}" Margin="0,0,20,0">
+                        <ListBox ItemsSource="{Binding Templates}" BorderThickness="0" Background="Transparent">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="#EEE" BorderThickness="0,0,0,1" Padding="10">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding Title}" FontWeight="Bold" FontSize="14"/>
+                                                <TextBlock Text="{Binding MessageBody}" Foreground="{StaticResource TextDimBrush}" TextWrapping="Wrap" Margin="0,5,0,0"/>
+                                            </StackPanel>
+                                            <Button Grid.Column="1" Content="" FontFamily="Segoe MDL2 Assets" Background="Transparent" BorderThickness="0" Margin="5,0" VerticalAlignment="Center"
+                                                    Command="{Binding DataContext.EditTemplateCommand, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding}"/>
+                                            <Button Grid.Column="2" Content="" FontFamily="Segoe MDL2 Assets" Background="Transparent" BorderThickness="0" Foreground="Red" VerticalAlignment="Center"
+                                                    Command="{Binding DataContext.DeleteTemplateCommand, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding}"/>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Border>
+
+                    <!-- Add New Template -->
+                    <Border Grid.Column="1" Style="{StaticResource CardBorder}" VerticalAlignment="Top">
+                        <StackPanel>
+                            <TextBlock Text="Add New Template" FontWeight="Bold" Margin="0,0,0,15"/>
+                            
+                            <TextBlock Text="Title" Margin="0,0,0,5"/>
+                            <TextBox Text="{Binding NewTemplateTitle, UpdateSourceTrigger=PropertyChanged}" Height="35" Margin="0,0,0,15"/>
+                            
+                            <TextBlock Text="Message Body" Margin="0,0,0,5"/>
+                            <TextBox Text="{Binding NewTemplateBody, UpdateSourceTrigger=PropertyChanged}" Height="100" TextWrapping="Wrap" AcceptsReturn="True" Margin="0,0,0,20"/>
+                            
+                            <Button Content="Save Template" Style="{StaticResource ModernButton}" Command="{Binding SaveTemplateCommand}"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Grid>
+
+        </Grid>
+    </Grid>
+</Window>
