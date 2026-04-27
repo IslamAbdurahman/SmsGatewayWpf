@@ -3,6 +3,9 @@ using System.Windows;
 using System.Windows.Controls;
 using SmsGatewayApp.Models;
 
+using Button = System.Windows.Controls.Button;
+using MessageBox = System.Windows.MessageBox;
+
 namespace SmsGatewayApp
 {
     public partial class HistoryWindow : Window
@@ -20,7 +23,7 @@ namespace SmsGatewayApp
             {
                 if (MessageBox.Show("Delete this history entry?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
-                    var db = new Services.DatabaseService();
+                    var db = Services.DatabaseService.Instance;
                     await db.DeleteHistoryItemAsync(entry.Id);
                     
                     var items = (List<SmsHistoryEntry>)HistoryGrid.ItemsSource;

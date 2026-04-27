@@ -56,12 +56,14 @@ namespace SmsGatewayApp.Services
             return ports;
         }
 
-        public async Task<bool> SendSmsAsync(string portName, string phoneNumber, string message)
+        public async Task<bool> SendSmsAsync(string portName, string phoneNumber, string message, CancellationToken cancellationToken = default)
         {
             phoneNumber = NormalizePhoneNumber(phoneNumber);
             var baudRates = new[] { 115200, 9600 };
             foreach (var baud in baudRates)
             {
+                if (cancellationToken.IsCancellationRequested) return false;
+
                 try
                 {
                     return await Task.Run(() =>
@@ -80,29 +82,34 @@ namespace SmsGatewayApp.Services
                             // Wake up
                             port.Write("\r\r");
                             Thread.Sleep(500);
+                            if (cancellationToken.IsCancellationRequested) return false;
                             port.DiscardInBuffer();
 
                             // Set to Text Mode
                             port.Write("AT+CMGF=1\r");
                             Thread.Sleep(500);
+                            if (cancellationToken.IsCancellationRequested) return false;
                             
                             // Set Recipient
                             port.Write($"AT+CMGS=\"{phoneNumber}\"\r");
                             Thread.Sleep(500);
+                            if (cancellationToken.IsCancellationRequested) return false;
 
                             // Send Message Body and Ctrl+Z (ASCII 26)
                             port.Write(message + (char)26);
                             Thread.Sleep(3000);
+                            if (cancellationToken.IsCancellationRequested) return false;
 
                             string response = port.ReadExisting();
                             port.Close();
 
                             return response.Contains("OK") || response.Contains("+CMGS:");
                         }
-                    });
+                    }, cancellationToken);
                 }
                 catch
                 {
+                    if (cancellationToken.IsCancellationRequested) return false;
                     continue; // Try next baud rate
                 }
             }

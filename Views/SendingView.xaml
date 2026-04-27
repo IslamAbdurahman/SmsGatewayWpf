@@ -1,0 +1,177 @@
+<UserControl x:Class="SmsGatewayApp.Views.SendingView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:helpers="clr-namespace:SmsGatewayApp.Helpers"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="SMS Yuborish" Style="{StaticResource HeaderLabel}"/>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="360"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Left: Controls -->
+            <StackPanel Margin="0,0,20,0">
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,15">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Group + Template -->
+                        <StackPanel Margin="0,0,10,15">
+                            <TextBlock Text="Guruh" Foreground="{StaticResource TextDimBrush}" FontSize="12" Margin="0,0,0,5"/>
+                            <ComboBox ItemsSource="{Binding Groups}" DisplayMemberPath="Name"
+                                      SelectedItem="{Binding SelectedGroup}" Height="45"
+                                      helpers:TextBoxHelper.Placeholder="Guruh tanlang"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Margin="10,0,0,15">
+                            <TextBlock Text="Shablon" Foreground="{StaticResource TextDimBrush}" FontSize="12" Margin="0,0,0,5"/>
+                            <ComboBox ItemsSource="{Binding Templates}" DisplayMemberPath="Title"
+                                      SelectedItem="{Binding SelectedTemplate}" Height="45"
+                                      helpers:TextBoxHelper.Placeholder="Shablon tanlang"/>
+                        </StackPanel>
+
+                        <!-- Port + actions -->
+                        <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="0,0,0,15">
+                            <TextBlock Text="Modem Port" Foreground="{StaticResource TextDimBrush}" FontSize="12" Margin="0,0,0,5"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <ComboBox ItemsSource="{Binding AvailablePorts}" DisplayMemberPath="DisplayName"
+                                          SelectedItem="{Binding SelectedPort}" Height="45" Margin="0,0,8,0"
+                                          helpers:TextBoxHelper.Placeholder="Modem port"/>
+                                <Button Grid.Column="1" Content="Test" Width="65" Style="{StaticResource ModernButton}"
+                                        Padding="5" Command="{Binding TestConnectionCommand}" ToolTip="Ulanishni tekshirish"/>
+                                <Button Grid.Column="2" Content="Xotira tozala" Width="115" Margin="8,0,0,0"
+                                        Style="{StaticResource DangerButton}" Padding="5" Command="{Binding ClearModemMemoryCommand}"/>
+                                <Button Grid.Column="3" Content="&#xE72C;" FontFamily="Segoe MDL2 Assets" Width="45"
+                                        Margin="8,0,0,0" Command="{Binding RefreshPortsCommand}" ToolTip="Portlarni yangilash"/>
+                            </Grid>
+                        </StackPanel>
+
+                        <!-- Retry config -->
+                        <StackPanel Grid.Row="2" Grid.ColumnSpan="2">
+                            <TextBlock Text="Muvaffaqiyatsiz bo'lganda qayta urinishlar:" Foreground="{StaticResource TextDimBrush}" FontSize="12" Margin="0,0,0,5"/>
+                            <StackPanel Orientation="Horizontal">
+                                <CheckBox Content="Qayta urinish" 
+                                          IsChecked="{Binding IsRetryEnabled}"
+                                          Foreground="{StaticResource TextBrush}" Margin="0,0,20,0" VerticalAlignment="Center"/>
+                                <Slider Minimum="1" Maximum="5" Value="{Binding MaxRetries}" Width="150"
+                                        IsEnabled="{Binding IsRetryEnabled}"
+                                        TickFrequency="1" IsSnapToTickEnabled="True" VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding MaxRetries, StringFormat=' {0} marta'}" 
+                                           Visibility="{Binding IsRetryEnabled, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                           Foreground="{StaticResource PrimaryBrush}"
+                                           FontWeight="Bold" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- Send / Stop buttons -->
+                <Button Content="SMS Yuborishni Boshlash" Style="{StaticResource ModernButton}"
+                        Background="{StaticResource AccentGradient}" Height="52" FontSize="16"
+                        Command="{Binding StartSendingCommand}"
+                        Visibility="{Binding IsSending, Converter={StaticResource StringToVisibilityConverter}, ConverterParameter=!True}"/>
+
+                <Button Content="⛔  To'xtatish" Style="{StaticResource DangerButton}" Height="52" FontSize="16"
+                        Command="{Binding CancelSendingCommand}"
+                        Visibility="{Binding IsSending, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                <!-- Progress -->
+                <Grid Margin="0,15,0,0" Visibility="{Binding IsSending, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <ProgressBar Value="{Binding ProgressValue}" Height="12" Foreground="{StaticResource PrimaryBrush}"
+                                 Background="#1AFFFFFF" BorderThickness="0"/>
+                    <Grid Grid.Row="1" Margin="0,6,0,0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="✅ " Foreground="#10B981"/>
+                            <TextBlock Text="{Binding TotalSent}" Foreground="#10B981" FontWeight="Bold" Margin="0,0,15,0"/>
+                            <TextBlock Text="❌ " Foreground="{StaticResource AccentBrush}"/>
+                            <TextBlock Text="{Binding TotalFailed}" Foreground="{StaticResource AccentBrush}" FontWeight="Bold" Margin="0,0,15,0"/>
+                            <TextBlock Text="⏭ " Foreground="{StaticResource TextDimBrush}"/>
+                            <TextBlock Text="{Binding TotalSkipped}" Foreground="{StaticResource TextDimBrush}" FontWeight="Bold"/>
+                        </StackPanel>
+                        <TextBlock Text="{Binding ProgressValue, StringFormat={}{0}%}" HorizontalAlignment="Right"
+                                   Foreground="{StaticResource TextDimBrush}" FontSize="12"/>
+                    </Grid>
+                </Grid>
+            </StackPanel>
+
+            <!-- Right: Real-time Log Panel -->
+            <Border Grid.Column="1" Style="{StaticResource CardBorder}" Padding="0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Border Background="#0AFFFFFF" Padding="16,12" CornerRadius="16,16,0,0">
+                        <TextBlock Text="📋  Yuborish Jurnali" FontWeight="Bold" FontSize="14"/>
+                    </Border>
+                    <ListBox Grid.Row="1" ItemsSource="{Binding SendingLog}" 
+                             Background="Transparent" BorderThickness="0" Padding="8"
+                             VirtualizingStackPanel.IsVirtualizing="True"
+                             VirtualizingStackPanel.VirtualizationMode="Recycling"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Padding" Value="0"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ListBoxItem">
+                                            <ContentPresenter />
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border Margin="0,3" Padding="10,8" CornerRadius="8" Background="#0AFFFFFF">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="30"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="{Binding StatusIcon}" FontSize="16" VerticalAlignment="Center"/>
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding DisplayName}" FontSize="12" FontWeight="SemiBold"/>
+                                            <TextBlock Text="{Binding StatusText}" FontSize="11" Foreground="{StaticResource TextDimBrush}"/>
+                                        </StackPanel>
+                                        <TextBlock Grid.Column="2" Text="{Binding Time, StringFormat=HH:mm:ss}"
+                                                   FontSize="11" Foreground="{StaticResource TextDimBrush}" VerticalAlignment="Center"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

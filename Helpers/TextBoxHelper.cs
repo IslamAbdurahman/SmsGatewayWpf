@@ -2,6 +2,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
+using Color = System.Windows.Media.Color;
+
 namespace SmsGatewayApp.Helpers
 {
     public static class TextBoxHelper
@@ -14,14 +16,14 @@ namespace SmsGatewayApp.Helpers
 
         private static void OnPlaceholderChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is TextBox textBox)
+            if (d is System.Windows.Controls.TextBox textBox)
             {
                 textBox.Loaded += (s, _) => UpdatePlaceholderVisibility(textBox);
                 textBox.TextChanged += (s, _) => UpdatePlaceholderVisibility(textBox);
                 textBox.GotFocus += (s, _) => UpdatePlaceholderVisibility(textBox);
                 textBox.LostFocus += (s, _) => UpdatePlaceholderVisibility(textBox);
             }
-            else if (d is ComboBox comboBox)
+            else if (d is System.Windows.Controls.ComboBox comboBox)
             {
                 comboBox.Loaded += (s, _) => UpdateComboBoxPlaceholder(comboBox);
                 comboBox.SelectionChanged += (s, _) => UpdateComboBoxPlaceholder(comboBox);
@@ -30,14 +32,14 @@ namespace SmsGatewayApp.Helpers
             }
         }
 
-        private static void UpdateComboBoxPlaceholder(ComboBox comboBox)
+        private static void UpdateComboBoxPlaceholder(System.Windows.Controls.ComboBox comboBox)
         {
             if (comboBox.SelectedItem == null && !comboBox.IsFocused)
             {
                 var placeholder = GetPlaceholder(comboBox);
                 var visualBrush = new VisualBrush
                 {
-                    Visual = new TextBlock
+                    Visual = new System.Windows.Controls.TextBlock
                     {
                         Text = placeholder,
                         Foreground = new SolidColorBrush(Color.FromArgb(120, 255, 255, 255)),
@@ -59,7 +61,7 @@ namespace SmsGatewayApp.Helpers
             }
         }
 
-        private static void UpdatePlaceholderVisibility(TextBox textBox)
+        private static void UpdatePlaceholderVisibility(System.Windows.Controls.TextBox textBox)
         {
             if (string.IsNullOrEmpty(textBox.Text) && !textBox.IsFocused)
             {

@@ -1,0 +1,81 @@
+<UserControl x:Class="SmsGatewayApp.Views.TemplatesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <TextBlock Text="SMS Templates" Style="{StaticResource HeaderLabel}"/>
+        
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="350"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Templates List -->
+            <Border Style="{StaticResource CardBorder}" Margin="0,0,20,0">
+                <ListBox ItemsSource="{Binding Templates}" BorderThickness="0" Background="Transparent">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="#EEE" BorderThickness="0,0,0,1" Padding="10">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Title}" FontWeight="Bold" FontSize="14"/>
+                                        <TextBlock Text="{Binding MessageBody}" Foreground="{StaticResource TextDimBrush}" TextWrapping="Wrap" Margin="0,5,0,0"/>
+                                    </StackPanel>
+                                    <Button Grid.Column="1" Content="&#xE70F;" FontFamily="Segoe MDL2 Assets" Background="Transparent" BorderThickness="0" Margin="5,0" VerticalAlignment="Center"
+                                            Command="{Binding DataContext.EditTemplateCommand, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding}"/>
+                                    <Button Grid.Column="2" Content="&#xE74D;" FontFamily="Segoe MDL2 Assets" Background="Transparent" BorderThickness="0" Foreground="Red" VerticalAlignment="Center"
+                                            Command="{Binding DataContext.DeleteTemplateCommand, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding}"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Border>
+
+            <!-- Add New Template -->
+            <Border Grid.Column="1" Style="{StaticResource CardBorder}" VerticalAlignment="Top">
+                <StackPanel>
+                    <TextBlock Text="Shablon Tahrirlash/Qo'shish" FontWeight="Bold" Margin="0,0,0,15"/>
+                    
+                    <TextBlock Text="Sarlavha" Foreground="{StaticResource TextDimBrush}" FontSize="12" Margin="0,0,0,5"/>
+                    <TextBox Text="{Binding NewTemplateTitle, UpdateSourceTrigger=PropertyChanged}" Height="35" Margin="0,0,0,15"/>
+                    
+                    <Grid Margin="0,0,0,5">
+                        <TextBlock Text="SMS Matni" Foreground="{StaticResource TextDimBrush}" FontSize="12"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <TextBlock Text="{Binding TemplateBodyLength}" Foreground="{StaticResource TextDimBrush}" FontSize="11"/>
+                            <TextBlock Text=" ta belgi / " Foreground="{StaticResource TextDimBrush}" FontSize="11"/>
+                            <TextBlock Text="{Binding SmsParts}" Foreground="{StaticResource TextDimBrush}" FontSize="11"/>
+                            <TextBlock Text=" ta SMS" Foreground="{StaticResource TextDimBrush}" FontSize="11"/>
+                        </StackPanel>
+                    </Grid>
+                    <TextBox Text="{Binding NewTemplateBody, UpdateSourceTrigger=PropertyChanged}" Height="120" TextWrapping="Wrap" AcceptsReturn="True" Margin="0,0,0,10"/>
+                    
+                    <!-- Helpers -->
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                        <TextBlock Text="O'zgaruvchilar: " Foreground="{StaticResource TextDimBrush}" FontSize="11" VerticalAlignment="Center"/>
+                        <Border Background="#1AFFFFFF" CornerRadius="4" Padding="4,2" Margin="5,0"><TextBlock Text="{}{name}" FontSize="11"/></Border>
+                        <Border Background="#1AFFFFFF" CornerRadius="4" Padding="4,2" Margin="5,0"><TextBlock Text="{}{phone}" FontSize="11"/></Border>
+                        <Border Background="#1AFFFFFF" CornerRadius="4" Padding="4,2" Margin="5,0"><TextBlock Text="{}{group}" FontSize="11"/></Border>
+                    </StackPanel>
+                    
+                    <Button Content="Shablonni Saqlash" Style="{StaticResource ModernButton}" Command="{Binding SaveTemplateCommand}"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>
