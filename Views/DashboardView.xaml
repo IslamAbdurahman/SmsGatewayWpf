@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -36,5 +37,16 @@
                 </StackPanel>
             </Border>
         </UniformGrid>
+
+        <Border Grid.Row="1" VerticalAlignment="Stretch" Margin="0,150,0,0" Style="{StaticResource CardBorder}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="SMS Yuborish Statistikasi" Foreground="{StaticResource TextDimBrush}" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                <lvc:PieChart Grid.Row="1" Series="{Binding SmsStatusSeries}" LegendPosition="Right" Margin="10"/>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>

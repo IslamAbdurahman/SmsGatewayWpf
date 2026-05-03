@@ -1,0 +1,409 @@
+2026-05-03 15:38:19.117 +05:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-05-03 15:38:19.146 +05:00 [INF] Hosting environment: Production
+2026-05-03 15:38:19.147 +05:00 [INF] Content root path: C:\DotNetProjects\SmsGatewayApp
+2026-05-03 15:41:57.175 +05:00 [INF] Application is shutting down...
+2026-05-03 15:42:03.615 +05:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-05-03 15:42:03.645 +05:00 [INF] Hosting environment: Production
+2026-05-03 15:42:03.646 +05:00 [INF] Content root path: C:\DotNetProjects\SmsGatewayApp
+2026-05-03 15:43:06.775 +05:00 [INF] Starting ProcessTaskItemsAsync with 2 ports and 2 items.
+2026-05-03 15:43:06.781 +05:00 [INF] Worker started for port COM4
+2026-05-03 15:43:06.781 +05:00 [INF] Worker started for port COM5
+2026-05-03 15:43:11.335 +05:00 [ERR] Failed to send SMS to 998330123322 via COM5
+2026-05-03 15:43:11.335 +05:00 [INF] Successfully sent SMS to +998 93 238 11 20 via COM4
+2026-05-03 15:43:11.394 +05:00 [INF] Worker finished for port COM4
+2026-05-03 15:43:11.554 +05:00 [INF] Worker finished for port COM5
+2026-05-03 15:43:22.759 +05:00 [INF] Starting ProcessTaskItemsAsync with 2 ports and 1 items.
+2026-05-03 15:43:22.760 +05:00 [INF] Worker started for port COM4
+2026-05-03 15:43:22.760 +05:00 [INF] Worker started for port COM5
+2026-05-03 15:43:22.760 +05:00 [INF] Worker finished for port COM5
+2026-05-03 15:43:27.295 +05:00 [INF] Successfully sent SMS to 998330123322 via COM4
+2026-05-03 15:43:27.334 +05:00 [INF] Worker finished for port COM4
+2026-05-03 15:47:21.513 +05:00 [INF] Application is shutting down...
+2026-05-03 15:47:57.723 +05:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-05-03 15:47:57.754 +05:00 [INF] Hosting environment: Production
+2026-05-03 15:47:57.755 +05:00 [INF] Content root path: C:\DotNetProjects\SmsGatewayApp
+2026-05-03 15:48:15.077 +05:00 [INF] Starting ProcessTaskItemsAsync with 2 ports and 2 items.
+2026-05-03 15:48:15.080 +05:00 [INF] Worker started for port COM4
+2026-05-03 15:48:15.080 +05:00 [INF] Worker started for port COM5
+2026-05-03 15:48:19.629 +05:00 [INF] Successfully sent SMS to +998 93 238 11 20 via COM4
+2026-05-03 15:48:19.639 +05:00 [ERR] Failed to send SMS to 998330123322 via COM5
+2026-05-03 15:48:19.668 +05:00 [INF] Worker finished for port COM4
+2026-05-03 15:48:19.702 +05:00 [INF] Worker finished for port COM5
+2026-05-03 15:50:25.966 +05:00 [INF] Application is shutting down...
+2026-05-03 15:50:36.942 +05:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-05-03 15:50:36.971 +05:00 [INF] Hosting environment: Production
+2026-05-03 15:50:36.972 +05:00 [INF] Content root path: C:\DotNetProjects\SmsGatewayApp
+2026-05-03 15:50:50.957 +05:00 [INF] Starting ProcessTaskItemsAsync with 1 ports and 1 items.
+2026-05-03 15:50:50.960 +05:00 [INF] Worker started for port COM4 - HUAWEI Mobile Connect - 3G PC UI Interface
+2026-05-03 15:50:55.538 +05:00 [INF] Successfully sent SMS to 998330123322 via COM4 - HUAWEI Mobile Connect - 3G PC UI Interface
+2026-05-03 15:50:55.585 +05:00 [INF] Worker finished for port COM4
+2026-05-03 16:00:47.241 +05:00 [INF] Starting ProcessTaskItemsAsync with 1 ports and 2 items.
+2026-05-03 16:00:47.241 +05:00 [INF] Worker started for port COM5 - HUAWEI Mobile Connect - 3G Application Interface
+2026-05-03 16:00:51.780 +05:00 [ERR] Failed to send SMS to +998 93 238 11 20 via COM5 - HUAWEI Mobile Connect - 3G Application Interface
+2026-05-03 16:01:06.361 +05:00 [ERR] Failed to send SMS to 998330123322 via COM5 - HUAWEI Mobile Connect - 3G Application Interface
+2026-05-03 16:01:06.403 +05:00 [INF] Worker finished for port COM5
+2026-05-03 16:15:44.565 +05:00 [INF] Application is shutting down...
+2026-05-03 16:16:28.474 +05:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-05-03 16:16:28.503 +05:00 [INF] Hosting environment: Production
+2026-05-03 16:16:28.503 +05:00 [INF] Content root path: C:\DotNetProjects\SmsGatewayApp
+2026-05-03 16:21:14.109 +05:00 [INF] Application is shutting down...
+2026-05-03 16:21:39.501 +05:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-05-03 16:21:39.530 +05:00 [INF] Hosting environment: Production
+2026-05-03 16:21:39.530 +05:00 [INF] Content root path: C:\DotNetProjects\SmsGatewayApp
+2026-05-03 16:24:11.891 +05:00 [INF] Starting ProcessTaskItemsAsync with 1 ports and 2 items.
+2026-05-03 16:24:11.895 +05:00 [INF] Worker started for port COM4 - HUAWEI Mobile Connect - 3G PC UI Interface
+2026-05-03 16:24:11.896 +05:00 [INF] Making voice call to +998 93 238 11 20 via COM4
+2026-05-03 16:24:14.933 +05:00 [INF] Dial response: ^RSSI:25
+
+^RSSI:21
+
+^RSSI:24
+
+^RSSI:21
+
+^RSSI:24
+
+^RSSI:21
+
+^RSSI:24
+
+^RSSI:21
+
+^RSSI:25
+
+^RSSI:21
+
+^RSSI:25
+
+^RSSI:21
+
++CREG: 1
+
++CGREG: 0
+
++CREG: 1
+
++CGREG: 0
+
+^RSSI:25
+
+^RSSI:21
+
+^RSSI:24
+
+^RSSI:19
+
+^RSSI:23
+
+^RSSI:26
+
+^RSSI:22
+
+^RSSI:25
+
+^RSSI:22
+
+^RSSI:25
+
+^RSSI:22
+
+^RSSI:25
+
+^RSSI:21
+
+^RSSI:25
+
+^RSSI:21
+
+^RSSI:25
+
+^RSSI:22
+
+^RSSI:26
+
+^RSSI:23
+
+OK
+
+^ORIG:1,0
+
+^CONF:1
+2026-05-03 16:24:15.981 +05:00 [WRN] Target audio device 'COM4' not found. Using default device.
+2026-05-03 16:24:23.282 +05:00 [INF] Successfully processed item to +998 93 238 11 20 via COM4 - HUAWEI Mobile Connect - 3G PC UI Interface
+2026-05-03 16:24:33.340 +05:00 [INF] Making voice call to 998330123322 via COM4
+2026-05-03 16:24:36.349 +05:00 [INF] Dial response: ERROR
+2026-05-03 16:24:36.354 +05:00 [WRN] Target audio device 'COM4' not found. Using default device.
+2026-05-03 16:24:43.671 +05:00 [INF] Successfully processed item to 998330123322 via COM4 - HUAWEI Mobile Connect - 3G PC UI Interface
+2026-05-03 16:24:43.719 +05:00 [INF] Worker finished for port COM4
+2026-05-03 16:26:06.269 +05:00 [INF] Application is shutting down...
+2026-05-03 16:26:14.560 +05:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-05-03 16:26:14.589 +05:00 [INF] Hosting environment: Production
+2026-05-03 16:26:14.590 +05:00 [INF] Content root path: C:\DotNetProjects\SmsGatewayApp
+2026-05-03 16:26:34.884 +05:00 [INF] Starting ProcessTaskItemsAsync with 1 ports and 2 items.
+2026-05-03 16:26:34.887 +05:00 [INF] Worker started for port COM4 - HUAWEI Mobile Connect - 3G PC UI Interface
+2026-05-03 16:26:34.888 +05:00 [INF] Making voice call to +998 93 238 11 20 via COM4
+2026-05-03 16:26:35.121 +05:00 [INF] Dial response: ^CEND:1,0,104,16
+
+OK
+
+^ORIG:1,0
+2026-05-03 16:26:35.154 +05:00 [WRN] Target audio device 'COM4' not found. Using default device.
+2026-05-03 16:26:35.154 +05:00 [INF] Playing audio to device index 0
+2026-05-03 16:26:43.509 +05:00 [INF] Successfully processed item to +998 93 238 11 20 via COM4 - HUAWEI Mobile Connect - 3G PC UI Interface
+2026-05-03 16:26:53.565 +05:00 [INF] Making voice call to 998330123322 via COM4
+2026-05-03 16:26:53.789 +05:00 [INF] Dial response: +CSSI: 1
+ERROR
+2026-05-03 16:26:53.795 +05:00 [ERR] Failed to process item to 998330123322 via COM4 - HUAWEI Mobile Connect - 3G PC UI Interface. Error: Modem qo'ng'iroq qilishni rad etdi (ERROR).
+2026-05-03 16:26:53.836 +05:00 [INF] Worker finished for port COM4
+2026-05-03 16:26:57.413 +05:00 [INF] Starting ProcessTaskItemsAsync with 1 ports and 1 items.
+2026-05-03 16:26:57.414 +05:00 [INF] Worker started for port COM4 - HUAWEI Mobile Connect - 3G PC UI Interface
+2026-05-03 16:26:57.414 +05:00 [INF] Making voice call to 998330123322 via COM4
+2026-05-03 16:26:57.633 +05:00 [INF] Dial response: ERROR
+2026-05-03 16:26:57.637 +05:00 [ERR] Failed to process item to 998330123322 via COM4 - HUAWEI Mobile Connect - 3G PC UI Interface. Error: Modem qo'ng'iroq qilishni rad etdi (ERROR).
+2026-05-03 16:26:57.674 +05:00 [INF] Worker finished for port COM4
+2026-05-03 16:27:00.479 +05:00 [INF] Starting ProcessTaskItemsAsync with 1 ports and 1 items.
+2026-05-03 16:27:00.479 +05:00 [INF] Worker started for port COM4 - HUAWEI Mobile Connect - 3G PC UI Interface
+2026-05-03 16:27:00.479 +05:00 [INF] Making voice call to 998330123322 via COM4
+2026-05-03 16:27:00.709 +05:00 [INF] Dial response: ERROR
+2026-05-03 16:27:00.714 +05:00 [ERR] Failed to process item to 998330123322 via COM4 - HUAWEI Mobile Connect - 3G PC UI Interface. Error: Modem qo'ng'iroq qilishni rad etdi (ERROR).
+2026-05-03 16:27:00.751 +05:00 [INF] Worker finished for port COM4
+2026-05-03 16:27:01.902 +05:00 [INF] Starting ProcessTaskItemsAsync with 1 ports and 1 items.
+2026-05-03 16:27:01.902 +05:00 [INF] Worker started for port COM4 - HUAWEI Mobile Connect - 3G PC UI Interface
+2026-05-03 16:27:01.903 +05:00 [INF] Making voice call to 998330123322 via COM4
+2026-05-03 16:27:02.129 +05:00 [INF] Dial response: ERROR
+2026-05-03 16:27:02.132 +05:00 [ERR] Failed to process item to 998330123322 via COM4 - HUAWEI Mobile Connect - 3G PC UI Interface. Error: Modem qo'ng'iroq qilishni rad etdi (ERROR).
+2026-05-03 16:27:02.169 +05:00 [INF] Worker finished for port COM4
+2026-05-03 16:27:03.294 +05:00 [INF] Starting ProcessTaskItemsAsync with 1 ports and 1 items.
+2026-05-03 16:27:03.294 +05:00 [INF] Worker started for port COM4 - HUAWEI Mobile Connect - 3G PC UI Interface
+2026-05-03 16:27:03.294 +05:00 [INF] Making voice call to 998330123322 via COM4
+2026-05-03 16:27:03.519 +05:00 [INF] Dial response: ERROR
+2026-05-03 16:27:03.524 +05:00 [ERR] Failed to process item to 998330123322 via COM4 - HUAWEI Mobile Connect - 3G PC UI Interface. Error: Modem qo'ng'iroq qilishni rad etdi (ERROR).
+2026-05-03 16:27:03.559 +05:00 [INF] Worker finished for port COM4
+2026-05-03 16:27:23.901 +05:00 [INF] Starting ProcessTaskItemsAsync with 1 ports and 2 items.
+2026-05-03 16:27:23.902 +05:00 [INF] Worker started for port COM4 - HUAWEI Mobile Connect - 3G PC UI Interface
+2026-05-03 16:27:23.902 +05:00 [INF] Making voice call to +998 93 238 11 20 via COM4
+2026-05-03 16:27:24.140 +05:00 [INF] Dial response: ^CEND:1,0,104,31
+
+OK
+
+^ORIG:1,0
+2026-05-03 16:27:24.144 +05:00 [WRN] Target audio device 'COM4' not found. Using default device.
+2026-05-03 16:27:24.144 +05:00 [INF] Playing audio to device index 0
+2026-05-03 16:27:32.442 +05:00 [INF] Successfully processed item to +998 93 238 11 20 via COM4 - HUAWEI Mobile Connect - 3G PC UI Interface
+2026-05-03 16:27:42.499 +05:00 [INF] Making voice call to 998330123322 via COM4
+2026-05-03 16:27:42.722 +05:00 [INF] Dial response: +CSSI: 1
+ERROR
+2026-05-03 16:27:42.724 +05:00 [ERR] Failed to process item to 998330123322 via COM4 - HUAWEI Mobile Connect - 3G PC UI Interface. Error: Modem qo'ng'iroq qilishni rad etdi (ERROR).
+2026-05-03 16:27:42.760 +05:00 [INF] Worker finished for port COM4
+2026-05-03 16:27:49.022 +05:00 [INF] Starting ProcessTaskItemsAsync with 1 ports and 1 items.
+2026-05-03 16:27:49.022 +05:00 [INF] Worker started for port COM4 - HUAWEI Mobile Connect - 3G PC UI Interface
+2026-05-03 16:27:49.022 +05:00 [INF] Making voice call to 998330123322 via COM4
+2026-05-03 16:27:49.247 +05:00 [INF] Dial response: ERROR
+2026-05-03 16:27:49.252 +05:00 [ERR] Failed to process item to 998330123322 via COM4 - HUAWEI Mobile Connect - 3G PC UI Interface. Error: Modem qo'ng'iroq qilishni rad etdi (ERROR).
+2026-05-03 16:27:49.300 +05:00 [INF] Worker finished for port COM4
+2026-05-03 16:27:50.366 +05:00 [INF] Starting ProcessTaskItemsAsync with 1 ports and 1 items.
+2026-05-03 16:27:50.366 +05:00 [INF] Worker started for port COM4 - HUAWEI Mobile Connect - 3G PC UI Interface
+2026-05-03 16:27:50.366 +05:00 [INF] Making voice call to 998330123322 via COM4
+2026-05-03 16:27:50.592 +05:00 [INF] Dial response: ERROR
+2026-05-03 16:27:50.597 +05:00 [ERR] Failed to process item to 998330123322 via COM4 - HUAWEI Mobile Connect - 3G PC UI Interface. Error: Modem qo'ng'iroq qilishni rad etdi (ERROR).
+2026-05-03 16:27:50.638 +05:00 [INF] Worker finished for port COM4
+2026-05-03 16:30:10.197 +05:00 [INF] Application is shutting down...
+2026-05-03 16:30:17.238 +05:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-05-03 16:30:17.266 +05:00 [INF] Hosting environment: Production
+2026-05-03 16:30:17.267 +05:00 [INF] Content root path: C:\DotNetProjects\SmsGatewayApp
+2026-05-03 16:30:48.866 +05:00 [INF] Starting ProcessTaskItemsAsync with 1 ports and 2 items.
+2026-05-03 16:30:48.870 +05:00 [INF] Worker started for port COM4 - HUAWEI Mobile Connect - 3G PC UI Interface
+2026-05-03 16:30:48.871 +05:00 [INF] Making voice call to +998 93 238 11 20 via COM4
+2026-05-03 16:30:49.386 +05:00 [INF] Waiting for recipient to answer...
+2026-05-03 16:31:35.504 +05:00 [WRN] Call was not answered within timeout.
+2026-05-03 16:31:37.037 +05:00 [ERR] Failed to process item to +998 93 238 11 20 via COM4 - HUAWEI Mobile Connect - 3G PC UI Interface. Error: Call not answered.
+2026-05-03 16:31:47.388 +05:00 [INF] Making voice call to 998330123322 via COM4
+2026-05-03 16:31:47.902 +05:00 [INF] Waiting for recipient to answer...
+2026-05-03 16:32:34.030 +05:00 [WRN] Call was not answered within timeout.
+2026-05-03 16:32:35.555 +05:00 [ERR] Failed to process item to 998330123322 via COM4 - HUAWEI Mobile Connect - 3G PC UI Interface. Error: Call not answered.
+2026-05-03 16:32:35.591 +05:00 [INF] Worker finished for port COM4
+2026-05-03 16:35:01.872 +05:00 [INF] Application is shutting down...
+2026-05-03 16:35:08.499 +05:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-05-03 16:35:08.537 +05:00 [INF] Hosting environment: Production
+2026-05-03 16:35:08.538 +05:00 [INF] Content root path: C:\DotNetProjects\SmsGatewayApp
+2026-05-03 16:35:26.444 +05:00 [INF] Starting ProcessTaskItemsAsync with 1 ports and 2 items.
+2026-05-03 16:35:26.447 +05:00 [INF] Worker started for port COM4 - HUAWEI Mobile Connect - 3G PC UI Interface
+2026-05-03 16:35:26.448 +05:00 [INF] Making voice call to +998 93 238 11 20 via COM4
+2026-05-03 16:35:26.790 +05:00 [INF] Dialing +998 93 238 11 20...
+2026-05-03 16:35:27.012 +05:00 [INF] Dialing initiated. Waiting for answer...
+2026-05-03 16:35:40.857 +05:00 [INF] Call answered!
+2026-05-03 16:35:40.857 +05:00 [INF] Playing audio to answered call via COM4
+2026-05-03 16:35:40.900 +05:00 [WRN] Target audio device 'COM4' not found. Using default device.
+2026-05-03 16:35:40.900 +05:00 [INF] Playing audio to device index 0
+2026-05-03 16:35:49.254 +05:00 [INF] Successfully processed item to +998 93 238 11 20 via COM4 - HUAWEI Mobile Connect - 3G PC UI Interface
+2026-05-03 16:35:59.317 +05:00 [INF] Making voice call to 998330123322 via COM4
+2026-05-03 16:35:59.655 +05:00 [INF] Dialing 998330123322...
+2026-05-03 16:35:59.880 +05:00 [INF] Dialing initiated. Waiting for answer...
+2026-05-03 16:36:45.982 +05:00 [WRN] Call was not answered within timeout.
+2026-05-03 16:36:47.507 +05:00 [ERR] Failed to process item to 998330123322 via COM4 - HUAWEI Mobile Connect - 3G PC UI Interface. Error: Call not answered.
+2026-05-03 16:36:47.559 +05:00 [INF] Worker finished for port COM4
+2026-05-03 16:36:51.230 +05:00 [INF] Starting ProcessTaskItemsAsync with 1 ports and 1 items.
+2026-05-03 16:36:51.231 +05:00 [INF] Worker started for port COM4 - HUAWEI Mobile Connect - 3G PC UI Interface
+2026-05-03 16:36:51.231 +05:00 [INF] Making voice call to 998330123322 via COM4
+2026-05-03 16:36:51.567 +05:00 [INF] Dialing 998330123322...
+2026-05-03 16:36:51.791 +05:00 [INF] Dialing initiated. Waiting for answer...
+2026-05-03 16:37:37.904 +05:00 [WRN] Call was not answered within timeout.
+2026-05-03 16:37:39.427 +05:00 [ERR] Failed to process item to 998330123322 via COM4 - HUAWEI Mobile Connect - 3G PC UI Interface. Error: Call not answered.
+2026-05-03 16:37:39.466 +05:00 [INF] Worker finished for port COM4
+2026-05-03 16:39:43.815 +05:00 [INF] Starting ProcessTaskItemsAsync with 1 ports and 2 items.
+2026-05-03 16:39:43.815 +05:00 [INF] Worker started for port COM4 - HUAWEI Mobile Connect - 3G PC UI Interface
+2026-05-03 16:39:43.815 +05:00 [INF] Making voice call to +998 93 238 11 20 via COM4
+2026-05-03 16:39:44.153 +05:00 [INF] Dialing +998 93 238 11 20...
+2026-05-03 16:39:44.377 +05:00 [INF] Dialing initiated. Waiting for answer...
+2026-05-03 16:39:55.120 +05:00 [INF] Call answered!
+2026-05-03 16:39:55.121 +05:00 [INF] Playing audio to answered call via COM4
+2026-05-03 16:39:55.126 +05:00 [WRN] Target audio device 'COM4' not found. Using default device.
+2026-05-03 16:39:55.126 +05:00 [INF] Playing audio to device index 0
+2026-05-03 16:40:03.434 +05:00 [INF] Successfully processed item to +998 93 238 11 20 via COM4 - HUAWEI Mobile Connect - 3G PC UI Interface
+2026-05-03 16:40:13.483 +05:00 [INF] Making voice call to +998330123322 via COM4
+2026-05-03 16:40:13.821 +05:00 [INF] Dialing +998330123322...
+2026-05-03 16:40:14.044 +05:00 [ERR] Modem refused ATD command: ERROR
+2026-05-03 16:40:14.050 +05:00 [ERR] Failed to process item to +998330123322 via COM4 - HUAWEI Mobile Connect - 3G PC UI Interface. Error: Modem qo'ng'iroq qilishni rad etdi (ERROR).
+2026-05-03 16:40:14.077 +05:00 [INF] Worker finished for port COM4
+2026-05-03 16:41:55.396 +05:00 [INF] Application is shutting down...
+2026-05-03 16:42:33.170 +05:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-05-03 16:42:33.201 +05:00 [INF] Hosting environment: Production
+2026-05-03 16:42:33.202 +05:00 [INF] Content root path: C:\DotNetProjects\SmsGatewayApp
+2026-05-03 16:42:45.579 +05:00 [INF] Starting ProcessTaskItemsAsync with 1 ports and 1 items.
+2026-05-03 16:42:45.582 +05:00 [INF] Worker started for port COM4 - HUAWEI Mobile Connect - 3G PC UI Interface
+2026-05-03 16:42:45.583 +05:00 [INF] Making voice call to +998330123322 via COM4
+2026-05-03 16:42:46.037 +05:00 [INF] Dialing +998330123322...
+2026-05-03 16:42:46.258 +05:00 [INF] Dialing initiated. Waiting for answer...
+2026-05-03 16:42:55.468 +05:00 [INF] Call answered!
+2026-05-03 16:42:55.468 +05:00 [INF] Playing audio to answered call via COM4
+2026-05-03 16:42:55.498 +05:00 [INF] Scanning 1 audio output devices...
+2026-05-03 16:42:55.503 +05:00 [INF] Device 0: Speaker (Realtek(R) Audio)
+2026-05-03 16:42:55.505 +05:00 [WRN] No modem audio device found for hint 'COM4'. Using default system device.
+2026-05-03 16:42:55.505 +05:00 [INF] Final audio output device index: -1
+2026-05-03 16:43:03.822 +05:00 [INF] Successfully processed item to +998330123322 via COM4 - HUAWEI Mobile Connect - 3G PC UI Interface
+2026-05-03 16:43:03.866 +05:00 [INF] Worker finished for port COM4
+2026-05-03 16:43:27.231 +05:00 [INF] Starting ProcessTaskItemsAsync with 1 ports and 2 items.
+2026-05-03 16:43:27.231 +05:00 [INF] Worker started for port COM4 - HUAWEI Mobile Connect - 3G PC UI Interface
+2026-05-03 16:43:27.231 +05:00 [INF] Making voice call to +998 93 238 11 20 via COM4
+2026-05-03 16:43:27.685 +05:00 [INF] Dialing +998 93 238 11 20...
+2026-05-03 16:43:27.908 +05:00 [INF] Dialing initiated. Waiting for answer...
+2026-05-03 16:43:42.760 +05:00 [INF] Call answered!
+2026-05-03 16:43:42.760 +05:00 [INF] Playing audio to answered call via COM4
+2026-05-03 16:43:42.772 +05:00 [INF] Scanning 1 audio output devices...
+2026-05-03 16:43:42.773 +05:00 [INF] Device 0: Speaker (Realtek(R) Audio)
+2026-05-03 16:43:42.773 +05:00 [WRN] No modem audio device found for hint 'COM4'. Using default system device.
+2026-05-03 16:43:42.773 +05:00 [INF] Final audio output device index: -1
+2026-05-03 16:43:51.033 +05:00 [INF] Successfully processed item to +998 93 238 11 20 via COM4 - HUAWEI Mobile Connect - 3G PC UI Interface
+2026-05-03 16:44:01.070 +05:00 [INF] Making voice call to +998330123322 via COM4
+2026-05-03 16:44:01.518 +05:00 [INF] Dialing +998330123322...
+2026-05-03 16:44:01.740 +05:00 [INF] Dialing initiated. Waiting for answer...
+2026-05-03 16:44:13.537 +05:00 [INF] Call answered!
+2026-05-03 16:44:13.537 +05:00 [INF] Playing audio to answered call via COM4
+2026-05-03 16:44:13.538 +05:00 [INF] Scanning 1 audio output devices...
+2026-05-03 16:44:13.539 +05:00 [INF] Device 0: Speaker (Realtek(R) Audio)
+2026-05-03 16:44:13.540 +05:00 [WRN] No modem audio device found for hint 'COM4'. Using default system device.
+2026-05-03 16:44:13.540 +05:00 [INF] Final audio output device index: -1
+2026-05-03 16:44:21.878 +05:00 [INF] Successfully processed item to +998330123322 via COM4 - HUAWEI Mobile Connect - 3G PC UI Interface
+2026-05-03 16:44:21.930 +05:00 [INF] Worker finished for port COM4
+2026-05-03 16:50:37.669 +05:00 [INF] Application is shutting down...
+2026-05-03 16:53:01.475 +05:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-05-03 16:53:01.510 +05:00 [INF] Hosting environment: Production
+2026-05-03 16:53:01.511 +05:00 [INF] Content root path: C:\DotNetProjects\SmsGatewayApp
+2026-05-03 16:54:07.583 +05:00 [INF] Starting ProcessTaskItemsAsync with 1 ports and 1 items.
+2026-05-03 16:54:07.593 +05:00 [INF] Worker started for port ["HUAWEI Mobile Connect - 3G PC UI Interface (COM4)",null]
+2026-05-03 16:54:08.057 +05:00 [INF] Dialing +998330123322...
+2026-05-03 16:54:08.278 +05:00 [INF] Dialing initiated. Waiting for answer...
+2026-05-03 16:54:16.477 +05:00 [INF] Call answered!
+2026-05-03 16:54:16.477 +05:00 [INF] Playing audio to answered call via COM4 using audio device auto
+2026-05-03 16:54:16.483 +05:00 [INF] Scanning 1 audio output devices...
+2026-05-03 16:54:16.485 +05:00 [INF] Device 0: Speaker (Realtek(R) Audio)
+2026-05-03 16:54:16.487 +05:00 [WRN] No modem audio device found for hint 'COM4'. Using default system device.
+2026-05-03 16:54:16.487 +05:00 [INF] Final audio output device index: -1
+2026-05-03 16:54:24.842 +05:00 [INF] Successfully processed item to +998330123322 via ["HUAWEI Mobile Connect - 3G PC UI Interface (COM4)",null]
+2026-05-03 16:54:24.870 +05:00 [INF] Worker finished for port COM4
+2026-05-03 16:55:50.409 +05:00 [INF] Application is shutting down...
+2026-05-03 16:55:59.352 +05:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-05-03 16:55:59.381 +05:00 [INF] Hosting environment: Production
+2026-05-03 16:55:59.382 +05:00 [INF] Content root path: C:\DotNetProjects\SmsGatewayApp
+2026-05-03 16:56:17.053 +05:00 [INF] Starting ProcessTaskItemsAsync with 1 ports and 1 items.
+2026-05-03 16:56:17.058 +05:00 [INF] Worker started for port ["HUAWEI Mobile Connect - 3G PC UI Interface (COM4)",null]
+2026-05-03 16:56:17.516 +05:00 [INF] Dialing +998330123322...
+2026-05-03 16:56:17.740 +05:00 [INF] Dialing initiated. Waiting for answer...
+2026-05-03 16:56:25.941 +05:00 [INF] Call answered!
+2026-05-03 16:56:25.941 +05:00 [INF] Playing audio to answered call via COM4 using audio device auto
+2026-05-03 16:56:25.950 +05:00 [INF] Scanning 1 audio output devices...
+2026-05-03 16:56:25.952 +05:00 [INF] Device 0: Speaker (Realtek(R) Audio)
+2026-05-03 16:56:25.954 +05:00 [WRN] No modem audio device found for hint 'COM4'. Using default system device.
+2026-05-03 16:56:25.954 +05:00 [INF] Final audio output device index: -1
+2026-05-03 16:56:34.407 +05:00 [INF] Successfully processed item to +998330123322 via ["HUAWEI Mobile Connect - 3G PC UI Interface (COM4)",null]
+2026-05-03 16:56:34.448 +05:00 [INF] Worker finished for port COM4
+2026-05-03 16:57:39.893 +05:00 [INF] Application is shutting down...
+2026-05-03 16:58:41.239 +05:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-05-03 16:58:41.268 +05:00 [INF] Hosting environment: Production
+2026-05-03 16:58:41.269 +05:00 [INF] Content root path: C:\DotNetProjects\SmsGatewayApp
+2026-05-03 16:58:51.845 +05:00 [INF] Starting ProcessTaskItemsAsync with 1 ports and 1 items.
+2026-05-03 16:58:51.850 +05:00 [INF] Worker started for port ["HUAWEI Mobile Connect - 3G PC UI Interface (COM4)",null]
+2026-05-03 16:58:52.307 +05:00 [INF] Dialing +998330123322...
+2026-05-03 16:58:52.527 +05:00 [INF] Dialing initiated. Waiting for answer...
+2026-05-03 16:59:01.226 +05:00 [INF] Call answered!
+2026-05-03 16:59:01.226 +05:00 [INF] Playing audio to answered call via COM4 using audio device auto
+2026-05-03 16:59:01.233 +05:00 [INF] Final audio device number: -1
+2026-05-03 16:59:09.585 +05:00 [INF] Successfully processed item to +998330123322 via ["HUAWEI Mobile Connect - 3G PC UI Interface (COM4)",null]
+2026-05-03 16:59:09.619 +05:00 [INF] Worker finished for port COM4
+2026-05-03 16:59:56.659 +05:00 [INF] Application is shutting down...
+2026-05-03 17:03:21.256 +05:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-05-03 17:03:21.285 +05:00 [INF] Hosting environment: Production
+2026-05-03 17:03:21.286 +05:00 [INF] Content root path: C:\DotNetProjects\SmsGatewayApp
+2026-05-03 17:03:35.731 +05:00 [INF] Starting ProcessTaskItemsAsync with 1 ports and 1 items.
+2026-05-03 17:03:35.737 +05:00 [INF] Worker started for port ["HUAWEI Mobile Connect - 3G PC UI Interface (COM4)",null]
+2026-05-03 17:03:36.768 +05:00 [INF] FCLASS response: ERROR
+2026-05-03 17:03:37.803 +05:00 [INF] Dialing +998330123322 in voice mode...
+2026-05-03 17:03:37.916 +05:00 [INF] Dial response: OK
+
+^ORIG:1,0
+2026-05-03 17:03:37.916 +05:00 [INF] Waiting for answer...
+2026-05-03 17:03:38.730 +05:00 [INF] Call state: 2
+2026-05-03 17:03:39.544 +05:00 [INF] Call state: 2
+2026-05-03 17:03:40.358 +05:00 [INF] Call state: 2
+2026-05-03 17:03:41.174 +05:00 [INF] Call state: 2
+2026-05-03 17:03:41.992 +05:00 [INF] Call state: 2
+2026-05-03 17:03:42.810 +05:00 [INF] Call state: 2
+2026-05-03 17:03:43.626 +05:00 [INF] Call state: 2
+2026-05-03 17:03:44.444 +05:00 [INF] Call state: 3
+2026-05-03 17:03:45.259 +05:00 [INF] Call state: 3
+2026-05-03 17:03:46.074 +05:00 [INF] Call state: 3
+2026-05-03 17:03:46.886 +05:00 [INF] Call state: 0
+2026-05-03 17:03:46.887 +05:00 [INF] Call answered! Sending audio through serial port...
+2026-05-03 17:03:46.959 +05:00 [INF] Audio converted: 87760 bytes of PCM data
+2026-05-03 17:03:47.476 +05:00 [INF] VTX response: COMMAND NOT SUPPORT
+2026-05-03 17:03:47.476 +05:00 [WRN] VTX not supported. Falling back to timed wait.
+2026-05-03 17:03:47.476 +05:00 [INF] Audio duration: 5485ms. Holding call...
+2026-05-03 17:03:56.272 +05:00 [INF] Raw audio data sent: 87760 bytes
+2026-05-03 17:03:58.814 +05:00 [INF] Successfully processed item to +998330123322 via ["HUAWEI Mobile Connect - 3G PC UI Interface (COM4)",null]
+2026-05-03 17:03:58.854 +05:00 [INF] Worker finished for port COM4
+2026-05-03 17:10:45.811 +05:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-05-03 17:10:45.844 +05:00 [INF] Hosting environment: Production
+2026-05-03 17:10:45.845 +05:00 [INF] Content root path: C:\DotNetProjects\SmsGatewayApp
+2026-05-03 17:11:01.516 +05:00 [INF] Starting ProcessTaskItemsAsync with 1 ports and 1 items.
+2026-05-03 17:11:01.522 +05:00 [INF] Worker started for port ["HUAWEI Mobile Connect - 3G PC UI Interface (COM4)",null]
+2026-05-03 17:11:02.050 +05:00 [INF] Dialing +998330123322 via COM4...
+2026-05-03 17:11:02.160 +05:00 [INF] Dial response: OK
+
+^ORIG:1,0
+2026-05-03 17:11:02.160 +05:00 [INF] Waiting for answer...
+2026-05-03 17:11:02.975 +05:00 [INF] Call state: 2
+2026-05-03 17:11:03.790 +05:00 [INF] Call state: 2
+2026-05-03 17:11:04.614 +05:00 [INF] Call state: 2
+2026-05-03 17:11:05.430 +05:00 [INF] Call state: 2
+2026-05-03 17:11:06.247 +05:00 [INF] Call state: 2
+2026-05-03 17:11:07.059 +05:00 [INF] Call state: 2
+2026-05-03 17:11:07.880 +05:00 [INF] Call state: 2
+2026-05-03 17:11:08.712 +05:00 [INF] Call state: 3
+2026-05-03 17:11:09.527 +05:00 [INF] Call state: 3
+2026-05-03 17:11:10.337 +05:00 [INF] Call state: 0
+2026-05-03 17:11:10.337 +05:00 [INF] Call answered! Holding for audio duration...
+2026-05-03 17:11:10.384 +05:00 [INF] Audio duration: 5496ms
+2026-05-03 17:11:15.880 +05:00 [INF] Hanging up...
+2026-05-03 17:11:16.899 +05:00 [INF] Successfully processed item to +998330123322 via ["HUAWEI Mobile Connect - 3G PC UI Interface (COM4)",null]
+2026-05-03 17:11:16.940 +05:00 [INF] Worker finished for port COM4
+2026-05-03 17:23:03.929 +05:00 [INF] Application is shutting down...

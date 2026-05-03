@@ -255,7 +255,7 @@ namespace SmsGatewayApp.ViewModels
             
             Application.Current.Dispatcher.Invoke(() =>
             {
-                var win = new HistoryWindow(contact.DisplayName, history);
+                var win = new HistoryWindow(_db, contact.DisplayName, history);
                 win.Owner = Application.Current.MainWindow;
                 win.ShowDialog();
             });

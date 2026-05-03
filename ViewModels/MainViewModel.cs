@@ -59,6 +59,7 @@ namespace SmsGatewayApp.ViewModels
                 Constants.ViewNames.Blacklist => _serviceProvider.GetService(typeof(BlacklistViewModel)),
                 Constants.ViewNames.Backup => _serviceProvider.GetService(typeof(BackupViewModel)),
                 Constants.ViewNames.History => _serviceProvider.GetService(typeof(HistoryViewModel)),
+                Constants.ViewNames.Tasks => _serviceProvider.GetService(typeof(TasksViewModel)),
                 _ => CurrentViewModel
             };
 

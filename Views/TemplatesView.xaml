@@ -33,12 +33,20 @@
                                     </Grid.ColumnDefinitions>
                                     <StackPanel>
                                         <TextBlock Text="{Binding Title}" FontWeight="Bold" FontSize="14"/>
-                                        <TextBlock Text="{Binding MessageBody}" Foreground="{StaticResource TextDimBrush}" TextWrapping="Wrap" Margin="0,5,0,0"/>
+                                        <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                                            <TextBlock Text="&#xE7F6; " FontFamily="Segoe MDL2 Assets" Foreground="#3B82F6" Visibility="{Binding AudioPath, Converter={StaticResource NullToVisibilityConverter}}" VerticalAlignment="Center"/>
+                                            <TextBlock Text="{Binding MessageBody}" Foreground="{StaticResource TextDimBrush}" TextWrapping="Wrap" MaxHeight="40"/>
+                                        </StackPanel>
                                     </StackPanel>
-                                    <Button Grid.Column="1" Content="&#xE70F;" FontFamily="Segoe MDL2 Assets" Background="Transparent" BorderThickness="0" Margin="5,0" VerticalAlignment="Center"
-                                            Command="{Binding DataContext.EditTemplateCommand, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding}"/>
-                                    <Button Grid.Column="2" Content="&#xE74D;" FontFamily="Segoe MDL2 Assets" Background="Transparent" BorderThickness="0" Foreground="Red" VerticalAlignment="Center"
-                                            Command="{Binding DataContext.DeleteTemplateCommand, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding}"/>
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                        <Button Content="&#xE768;" FontFamily="Segoe MDL2 Assets" Background="Transparent" BorderThickness="0" Foreground="#3B82F6" Margin="5,0"
+                                                Visibility="{Binding AudioPath, Converter={StaticResource NullToVisibilityConverter}}"
+                                                Command="{Binding DataContext.PlayAudioCommand, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding AudioPath}"/>
+                                        <Button Content="&#xE70F;" FontFamily="Segoe MDL2 Assets" Background="Transparent" BorderThickness="0" Margin="5,0"
+                                                Command="{Binding DataContext.EditTemplateCommand, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding}"/>
+                                        <Button Content="&#xE74D;" FontFamily="Segoe MDL2 Assets" Background="Transparent" BorderThickness="0" Foreground="Red" Margin="5,0"
+                                                Command="{Binding DataContext.DeleteTemplateCommand, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding}"/>
+                                    </StackPanel>
                                 </Grid>
                             </Border>
                         </DataTemplate>
@@ -64,6 +72,20 @@
                         </StackPanel>
                     </Grid>
                     <TextBox Text="{Binding NewTemplateBody, UpdateSourceTrigger=PropertyChanged}" Height="120" TextWrapping="Wrap" AcceptsReturn="True" Margin="0,0,0,10"/>
+                    
+                    <TextBlock Text="Audio Fayl (Agar SMS matni bo'lmasa, qo'ng'iroq qilinadi)" Foreground="{StaticResource TextDimBrush}" FontSize="12" Margin="0,0,0,5"/>
+                    <Grid Margin="0,0,0,15">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox Text="{Binding NewAudioPath}" IsReadOnly="True" Height="35" VerticalContentAlignment="Center"/>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <Button Content="&#xE768;" FontFamily="Segoe MDL2 Assets" Command="{Binding PlayAudioCommand}" Width="40" Margin="5,0,0,0" ToolTip="Eshittirib ko'rish"
+                                    Visibility="{Binding NewAudioPath, Converter={StaticResource NullToVisibilityConverter}}"/>
+                            <Button Content="&#xED25;" FontFamily="Segoe MDL2 Assets" Command="{Binding BrowseAudioCommand}" Width="40" Margin="5,0,0,0" ToolTip="Audio tanlash"/>
+                        </StackPanel>
+                    </Grid>
                     
                     <!-- Helpers -->
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,20">

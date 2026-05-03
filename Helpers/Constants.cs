@@ -12,6 +12,7 @@ namespace SmsGatewayApp.Helpers
             public const string Blacklist = "Blacklist";
             public const string Backup = "Backup";
             public const string History = "History";
+            public const string Tasks = "Tasks";
         }
     }
 }

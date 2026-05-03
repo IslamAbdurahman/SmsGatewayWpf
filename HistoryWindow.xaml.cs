@@ -10,9 +10,12 @@ namespace SmsGatewayApp
 {
     public partial class HistoryWindow : Window
     {
-        public HistoryWindow(string contactName, List<SmsHistoryEntry> history)
+        private readonly Services.DatabaseService _db;
+
+        public HistoryWindow(Services.DatabaseService db, string contactName, List<SmsHistoryEntry> history)
         {
             InitializeComponent();
+            _db = db;
             ContactInfo.Text = $"History for {contactName}";
             HistoryGrid.ItemsSource = history;
         }
@@ -23,8 +26,7 @@ namespace SmsGatewayApp
             {
                 if (MessageBox.Show("Delete this history entry?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
-                    var db = Services.DatabaseService.Instance;
-                    await db.DeleteHistoryItemAsync(entry.Id);
+                    await _db.DeleteHistoryItemAsync(entry.Id);
                     
                     var items = (List<SmsHistoryEntry>)HistoryGrid.ItemsSource;
                     items.Remove(entry);

@@ -2,6 +2,7 @@ using System;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 using SmsGatewayApp.Services;
 using SmsGatewayApp.ViewModels;
 
@@ -14,11 +15,15 @@ namespace SmsGatewayApp
         public App()
         {
             _host = Host.CreateDefaultBuilder()
+                .UseSerilog((context, services, configuration) => configuration
+                    .WriteTo.Console()
+                    .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day))
                 .ConfigureServices((context, services) =>
                 {
                     // Services
-                    services.AddSingleton<DatabaseService>(DatabaseService.Instance); // Keeping existing singleton for now
+                    services.AddSingleton<DatabaseService>();
                     services.AddTransient<ExcelService>();
+                    services.AddSingleton<VoiceService>();
                     services.AddTransient<SmsService>();
 
                     // ViewModels
@@ -30,6 +35,7 @@ namespace SmsGatewayApp
                     services.AddTransient<BlacklistViewModel>();
                     services.AddTransient<BackupViewModel>();
                     services.AddTransient<HistoryViewModel>();
+                    services.AddTransient<TasksViewModel>();
 
                     // Main Window
                     services.AddSingleton(s => new MainWindow

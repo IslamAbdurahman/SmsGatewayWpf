@@ -95,6 +95,13 @@
                                 <TextBlock Text="Tarix (History)" VerticalAlignment="Center"/>
                             </StackPanel>
                         </RadioButton>
+                        <RadioButton Style="{StaticResource SidebarButton}" 
+                                     Command="{Binding NavigateCommand}" CommandParameter="Tasks">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE8B0;" FontFamily="Segoe MDL2 Assets" Margin="0,0,15,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="Vazifalar (Tasks)" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </RadioButton>
                     </StackPanel>
                 </ScrollViewer>
 
@@ -130,6 +137,9 @@
                     </DataTemplate>
                     <DataTemplate DataType="{x:Type viewModels:HistoryViewModel}">
                         <views:HistoryView />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type viewModels:TasksViewModel}">
+                        <views:TasksView />
                     </DataTemplate>
                 </ContentControl.Resources>
             </ContentControl>

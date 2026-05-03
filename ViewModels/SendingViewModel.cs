@@ -18,7 +18,6 @@ namespace SmsGatewayApp.ViewModels
     {
         private readonly DatabaseService _db;
         private readonly SmsService _smsService;
-        private CancellationTokenSource? _cts;
 
         public SendingViewModel(DatabaseService db, SmsService smsService)
         {
@@ -129,64 +128,59 @@ namespace SmsGatewayApp.ViewModels
             if (AvailablePorts.Any()) SelectedPort = AvailablePorts[0];
         }
 
-        private bool CanStartSending() => SelectedGroup != null && SelectedTemplate != null && SelectedPort != null && !IsSending;
+        private bool CanStartSending() => SelectedGroup != null && SelectedTemplate != null && (!string.IsNullOrWhiteSpace(SelectedTemplate.MessageBody) || !string.IsNullOrWhiteSpace(SelectedTemplate.AudioPath)) && SelectedPort != null && !IsSending;
 
         private async Task StartSendingAsync()
         {
             if (SelectedGroup == null || SelectedTemplate == null || SelectedPort == null) return;
 
             IsSending = true;
-            ProgressValue = 0; TotalSent = 0; TotalFailed = 0; TotalSkipped = 0;
-            SendingLog.Clear();
-            StatusMessage = "Kontaktlar yuklanmoqda...";
-            _cts = new CancellationTokenSource();
+            StatusMessage = "Vazifa yaratilmoqda...";
 
             var contacts = await _db.GetContactsByGroupAsync(SelectedGroup.Id);
-            TotalSms = contacts.Count;
-            int current = 0;
+            if (!contacts.Any())
+            {
+                MessageBox.Show("Guruhda kontaktlar mavjud emas.", "Xato", MessageBoxButton.OK, MessageBoxImage.Warning);
+                IsSending = false;
+                return;
+            }
 
+            // Create Task
+            string taskTitle = $"{SelectedGroup.Name} - {SelectedTemplate.Title} ({DateTime.Now:g})";
+            int taskId = await _db.CreateSmsTaskAsync(taskTitle);
+
+            // Prepare Items
+            var items = new List<(string Phone, string Message, string? AudioPath)>();
             foreach (var contact in contacts)
             {
-                if (_cts.Token.IsCancellationRequested) break;
+                if (await _db.IsBlacklistedAsync(contact.Phone)) continue;
 
-                string phone = contact.Phone.StartsWith("+") ? contact.Phone : "+" + contact.Phone;
-                string message = InterpolateMessage(SelectedTemplate.MessageBody, contact);
+                string message = string.IsNullOrEmpty(SelectedTemplate.MessageBody) ? string.Empty : InterpolateMessage(SelectedTemplate.MessageBody, contact);
+                items.Add((contact.Phone, message, SelectedTemplate.AudioPath));
+            }
 
-                if (await _db.IsBlacklistedAsync(contact.Phone))
+            if (items.Any())
+            {
+                await _db.BulkInsertTaskItemsAsync(taskId, items);
+                StatusMessage = "Vazifa muvaffaqiyatli yaratildi.";
+                
+                var result = MessageBox.Show("Vazifa yaratildi. Vazifalar oynasiga o'tishni xohlaysizmi?", "Muvaffaqiyat", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
                 {
-                    Application.Current.Dispatcher.Invoke(() => SendingLog.Insert(0, new SmsLogEntry { Phone = phone, Name = contact.Name, Status = SmsLogStatus.Skipped }));
-                    TotalSkipped++; current++;
-                    ProgressValue = (int)((double)current / TotalSms * 100);
-                    continue;
+                    // Find MainViewModel and navigate
+                    if (Application.Current.MainWindow.DataContext is MainViewModel mainVm)
+                    {
+                        mainVm.Navigate(Constants.ViewNames.Tasks);
+                    }
                 }
-
-                bool success = false; int attempt = 0;
-                var logEntry = new SmsLogEntry { Phone = phone, Name = contact.Name, Status = SmsLogStatus.Sending };
-                Application.Current.Dispatcher.Invoke(() => SendingLog.Insert(0, logEntry));
-
-                while (!success && attempt <= MaxRetries && !_cts.Token.IsCancellationRequested)
-                {
-                    attempt++;
-                    logEntry.AttemptNumber = attempt;
-                    logEntry.Status = attempt == 1 ? SmsLogStatus.Sending : SmsLogStatus.Retrying;
-                    StatusMessage = attempt == 1 ? $"Yuborilmoqda: {phone}" : $"Qayta urinish #{attempt}: {phone}";
-                    success = await _smsService.SendSmsAsync(SelectedPort.PortName, phone, message, _cts.Token);
-                    if (!success && attempt <= MaxRetries) await Task.Delay(3000, _cts.Token).ContinueWith(_ => { });
-                }
-
-                if (_cts.Token.IsCancellationRequested) logEntry.Status = SmsLogStatus.Cancelled;
-                else if (success) { logEntry.Status = SmsLogStatus.Sent; TotalSent++; }
-                else { logEntry.Status = SmsLogStatus.Failed; TotalFailed++; }
-
-                await _db.AddHistoryAsync(contact.Id, message, logEntry.Status.ToString());
-                current++;
-                ProgressValue = (int)((double)current / TotalSms * 100);
+            }
+            else
+            {
+                MessageBox.Show("Yuborish uchun yaroqli kontaktlar topilmadi (balki barchasi qora ro'yxatdadir).", "Xato", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
 
             IsSending = false;
-            StatusMessage = _cts.Token.IsCancellationRequested ? "Bekor qilindi." : "Yakunlandi.";
-            WindowsNotificationHelper.ShowSuccess($"SMS yuborish yakunlandi: {TotalSent} ta yuborildi.");
-            _cts.Dispose(); _cts = null;
+            StatusMessage = "Tayyor";
         }
 
         private string InterpolateMessage(string template, SmsContact contact)
@@ -199,7 +193,7 @@ namespace SmsGatewayApp.ViewModels
                 .Replace("{time}", DateTime.Now.ToString("HH:mm"));
         }
 
-        private void CancelSending() { _cts?.Cancel(); IsSending = false; StatusMessage = "Bekor qilinmoqda..."; }
+        private void CancelSending() { IsSending = false; StatusMessage = "Bekor qilinmoqda..."; }
 
         private async Task TestConnectionAsync()
         {

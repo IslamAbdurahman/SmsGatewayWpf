@@ -10,14 +10,11 @@ namespace SmsGatewayApp.Services
 {
     public class DatabaseService
     {
-        private static readonly Lazy<DatabaseService> _instance = new(() => new DatabaseService());
-        public static DatabaseService Instance => _instance.Value;
-
         private readonly string _dbPath;
         private readonly string _connectionString;
         public string DbPath => _dbPath;
 
-        private DatabaseService()
+        public DatabaseService()
         {
             var folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "SmsGatewayApp");
             if (!Directory.Exists(folder))
@@ -27,9 +24,11 @@ namespace SmsGatewayApp.Services
             _connectionString = $"Data Source={_dbPath}";
         }
 
+        private SqliteConnection GetConnection() => new(_connectionString);
+
         public async Task InitializeDatabaseAsync()
         {
-            using var connection = new SqliteConnection(_connectionString);
+            using var connection = GetConnection();
             await connection.OpenAsync();
 
             var commands = new[]
@@ -39,10 +38,12 @@ namespace SmsGatewayApp.Services
                     Name TEXT NOT NULL,
                     CreatedAt DATETIME NOT NULL
                 );",
+                @"CREATE TABLE IF NOT EXISTS Modems (Id INTEGER PRIMARY KEY AUTOINCREMENT, PortName TEXT UNIQUE, DisplayName TEXT, IsEnabled INTEGER DEFAULT 1, AudioDeviceName TEXT);",
                 @"CREATE TABLE IF NOT EXISTS SmsTemplates (
                     Id INTEGER PRIMARY KEY AUTOINCREMENT,
                     Title TEXT NOT NULL,
-                    MessageBody TEXT NOT NULL
+                    MessageBody TEXT NOT NULL,
+                    AudioPath TEXT
                 );",
                 @"CREATE TABLE IF NOT EXISTS SmsContacts (
                     Id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -65,6 +66,24 @@ namespace SmsGatewayApp.Services
                     Phone TEXT NOT NULL UNIQUE,
                     Reason TEXT,
                     AddedAt DATETIME NOT NULL
+                );",
+                @"CREATE TABLE IF NOT EXISTS SmsTasks (
+                    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    Title TEXT NOT NULL,
+                    CreatedAt DATETIME NOT NULL,
+                    Status TEXT NOT NULL
+                );",
+                @"CREATE TABLE IF NOT EXISTS SmsTaskItems (
+                    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    TaskId INTEGER NOT NULL,
+                    PhoneNumber TEXT NOT NULL,
+                    Message TEXT NOT NULL,
+                    Status TEXT NOT NULL,
+                    RetryCount INTEGER DEFAULT 0,
+                    LastAttempt DATETIME,
+                    PortName TEXT,
+                    AudioPath TEXT,
+                    FOREIGN KEY(TaskId) REFERENCES SmsTasks(Id) ON DELETE CASCADE
                 );"
             };
 
@@ -73,6 +92,31 @@ namespace SmsGatewayApp.Services
                 using var command = new SqliteCommand(cmdText, connection);
                 await command.ExecuteNonQueryAsync();
             }
+
+            try 
+            {
+                using var cmd = new SqliteCommand("ALTER TABLE SmsTemplates ADD COLUMN AudioPath TEXT", connection);
+                await cmd.ExecuteNonQueryAsync();
+            } catch { }
+
+            try 
+            {
+                using var cmd = new SqliteCommand("ALTER TABLE SmsTaskItems ADD COLUMN AudioPath TEXT", connection);
+                await cmd.ExecuteNonQueryAsync();
+            } catch { }
+
+            try 
+            {
+                using var cmd = new SqliteCommand("ALTER TABLE Modems ADD COLUMN AudioDeviceName TEXT", connection);
+                await cmd.ExecuteNonQueryAsync();
+            } catch { }
+
+            try 
+            {
+                using var cmd = new SqliteCommand("ALTER TABLE SmsTaskItems ADD COLUMN PortName TEXT", connection);
+                await cmd.ExecuteNonQueryAsync();
+            }
+            catch { /* Ignore if column already exists */ }
 
         }
 
@@ -195,6 +239,18 @@ namespace SmsGatewayApp.Services
             await command.ExecuteNonQueryAsync();
         }
 
+        public async Task UpdateModemAsync(int id, string displayName, bool isEnabled, string? audioDeviceName)
+        {
+            using var conn = GetConnection();
+            await conn.OpenAsync();
+            using var cmd = new SqliteCommand("UPDATE Modems SET DisplayName = @name, IsEnabled = @enabled, AudioDeviceName = @audio WHERE Id = @id", conn);
+            cmd.Parameters.AddWithValue("@name", displayName);
+            cmd.Parameters.AddWithValue("@enabled", isEnabled ? 1 : 0);
+            cmd.Parameters.AddWithValue("@audio", (object?)audioDeviceName ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@id", id);
+            await cmd.ExecuteNonQueryAsync();
+        }
+
         public async Task UpdateContactAsync(int id, string phone, string? name)
         {
             using var connection = new SqliteConnection(_connectionString);
@@ -216,6 +272,18 @@ namespace SmsGatewayApp.Services
             await command.ExecuteNonQueryAsync();
         }
 
+        public async Task<int?> GetContactIdByPhoneAsync(string phone)
+        {
+            using var connection = new SqliteConnection(_connectionString);
+            await connection.OpenAsync();
+            using var command = new SqliteCommand("SELECT Id FROM SmsContacts WHERE Phone = @phone LIMIT 1", connection);
+            command.Parameters.AddWithValue("@phone", phone);
+            var result = await command.ExecuteScalarAsync();
+            if (result != null && result != DBNull.Value)
+                return Convert.ToInt32(result);
+            return null;
+        }
+
         // ── Templates ───────────────────────────────────────────────────────────
 
         public async Task<List<SmsTemplate>> GetTemplatesAsync()
@@ -230,30 +298,33 @@ namespace SmsGatewayApp.Services
                 {
                     Id = reader.GetInt32(0),
                     Title = reader.GetString(1),
-                    MessageBody = reader.GetString(2)
+                    MessageBody = reader.GetString(2),
+                    AudioPath = reader.FieldCount > 3 && !reader.IsDBNull(3) ? reader.GetString(3) : null
                 });
             return templates;
         }
 
-        public async Task SaveTemplateAsync(string title, string body)
+        public async Task SaveTemplateAsync(string title, string body, string? audioPath = null)
         {
             using var connection = new SqliteConnection(_connectionString);
             await connection.OpenAsync();
             using var command = new SqliteCommand(
-                "INSERT INTO SmsTemplates (Title, MessageBody) VALUES (@title, @body)", connection);
+                "INSERT INTO SmsTemplates (Title, MessageBody, AudioPath) VALUES (@title, @body, @audio)", connection);
             command.Parameters.AddWithValue("@title", title);
             command.Parameters.AddWithValue("@body", body);
+            command.Parameters.AddWithValue("@audio", (object?)audioPath ?? DBNull.Value);
             await command.ExecuteNonQueryAsync();
         }
 
-        public async Task UpdateTemplateAsync(int id, string title, string body)
+        public async Task UpdateTemplateAsync(int id, string title, string body, string? audioPath = null)
         {
             using var connection = new SqliteConnection(_connectionString);
             await connection.OpenAsync();
             using var command = new SqliteCommand(
-                "UPDATE SmsTemplates SET Title = @title, MessageBody = @body WHERE Id = @id", connection);
+                "UPDATE SmsTemplates SET Title = @title, MessageBody = @body, AudioPath = @audio WHERE Id = @id", connection);
             command.Parameters.AddWithValue("@title", title);
             command.Parameters.AddWithValue("@body", body);
+            command.Parameters.AddWithValue("@audio", (object?)audioPath ?? DBNull.Value);
             command.Parameters.AddWithValue("@id", id);
             await command.ExecuteNonQueryAsync();
         }
@@ -431,7 +502,7 @@ namespace SmsGatewayApp.Services
         public async Task RestoreDatabaseAsync(string zipPath)
         {
             // Checkpoint WAL before overwrite
-            using (var conn = new SqliteConnection(_connectionString))
+            using (var conn = GetConnection())
             {
                 await conn.OpenAsync();
                 using var cmd = new SqliteCommand("PRAGMA wal_checkpoint(TRUNCATE);", conn);
@@ -451,7 +522,7 @@ namespace SmsGatewayApp.Services
         public async Task<Dictionary<string, int>> GetStatsAsync()
         {
             var stats = new Dictionary<string, int>();
-            using var connection = new SqliteConnection(_connectionString);
+            using var connection = GetConnection();
             await connection.OpenAsync();
 
             // Contacts count
@@ -471,6 +542,121 @@ namespace SmsGatewayApp.Services
                 stats["Failed"] = Convert.ToInt32(await cmd.ExecuteScalarAsync());
 
             return stats;
+        }
+        // ── SMS Tasks ──────────────────────────────────────────────────────────
+
+        public async Task<int> CreateSmsTaskAsync(string title)
+        {
+            using var connection = GetConnection();
+            await connection.OpenAsync();
+            const string cmdText = "INSERT INTO SmsTasks (Title, CreatedAt, Status) VALUES (@title, @date, 'Pending'); SELECT last_insert_rowid();";
+            using var command = new SqliteCommand(cmdText, connection);
+            command.Parameters.AddWithValue("@title", title);
+            command.Parameters.AddWithValue("@date", DateTime.Now);
+            var result = await command.ExecuteScalarAsync();
+            return Convert.ToInt32(result);
+        }
+
+        public async Task BulkInsertTaskItemsAsync(int taskId, List<(string PhoneNumber, string Message, string? AudioPath)> items)
+        {
+            using var connection = GetConnection();
+            await connection.OpenAsync();
+            using var tx = connection.BeginTransaction();
+            try
+            {
+                const string cmdText = "INSERT INTO SmsTaskItems (TaskId, PhoneNumber, Message, Status, AudioPath) VALUES (@taskId, @phone, @msg, 'Pending', @audio)";
+                using var command = new SqliteCommand(cmdText, connection, tx);
+                command.Parameters.Add("@taskId", SqliteType.Integer);
+                command.Parameters.Add("@phone", SqliteType.Text);
+                command.Parameters.Add("@msg", SqliteType.Text);
+                command.Parameters.Add("@audio", SqliteType.Text);
+
+                foreach (var item in items)
+                {
+                    command.Parameters["@taskId"].Value = taskId;
+                    command.Parameters["@phone"].Value = item.PhoneNumber;
+                    command.Parameters["@msg"].Value = item.Message;
+                    command.Parameters["@audio"].Value = (object?)item.AudioPath ?? DBNull.Value;
+                    await command.ExecuteNonQueryAsync();
+                }
+                await tx.CommitAsync();
+            }
+            catch { await tx.RollbackAsync(); throw; }
+        }
+
+        public async Task<List<SmsTask>> GetSmsTasksAsync()
+        {
+            var tasks = new List<SmsTask>();
+            using var connection = GetConnection();
+            await connection.OpenAsync();
+            using var command = new SqliteCommand("SELECT * FROM SmsTasks ORDER BY CreatedAt DESC", connection);
+            using var reader = await command.ExecuteReaderAsync();
+            while (await reader.ReadAsync())
+                tasks.Add(new SmsTask
+                {
+                    Id = reader.GetInt32(0),
+                    Title = reader.GetString(1),
+                    CreatedAt = reader.GetDateTime(2),
+                    Status = reader.GetString(3)
+                });
+            return tasks;
+        }
+
+        public async Task<List<SmsTaskItem>> GetSmsTaskItemsAsync(int taskId, string? statusFilter = null)
+        {
+            var items = new List<SmsTaskItem>();
+            using var connection = GetConnection();
+            await connection.OpenAsync();
+            
+            string cmdText = "SELECT * FROM SmsTaskItems WHERE TaskId = @taskId";
+            if (!string.IsNullOrEmpty(statusFilter)) cmdText += " AND Status = @status";
+            
+            using var command = new SqliteCommand(cmdText, connection);
+            command.Parameters.AddWithValue("@taskId", taskId);
+            if (!string.IsNullOrEmpty(statusFilter)) command.Parameters.AddWithValue("@status", statusFilter);
+
+            using var reader = await command.ExecuteReaderAsync();
+            while (await reader.ReadAsync())
+                items.Add(new SmsTaskItem
+                {
+                    Id = reader.GetInt32(0),
+                    TaskId = reader.GetInt32(1),
+                    PhoneNumber = reader.GetString(2),
+                    Message = reader.GetString(3),
+                    Status = reader.GetString(4),
+                    RetryCount = reader.GetInt32(5),
+                    LastAttempt = reader.IsDBNull(6) ? null : reader.GetDateTime(6),
+                    PortName = reader.FieldCount > 7 && !reader.IsDBNull(7) ? reader.GetString(7) : null,
+                    AudioPath = reader.FieldCount > 8 && !reader.IsDBNull(8) ? reader.GetString(8) : null
+                });
+            return items;
+        }
+
+        public async Task UpdateTaskItemStatusAsync(int itemId, string status, bool incrementRetry = false, string? portName = null)
+        {
+            using var connection = new SqliteConnection(_connectionString);
+            await connection.OpenAsync();
+            string cmdText = "UPDATE SmsTaskItems SET Status = @status, LastAttempt = @now";
+            if (incrementRetry) cmdText += ", RetryCount = RetryCount + 1";
+            if (!string.IsNullOrEmpty(portName)) cmdText += ", PortName = @portName";
+            cmdText += " WHERE Id = @id";
+
+            using var command = new SqliteCommand(cmdText, connection);
+            command.Parameters.AddWithValue("@status", status);
+            command.Parameters.AddWithValue("@now", DateTime.Now);
+            if (!string.IsNullOrEmpty(portName)) command.Parameters.AddWithValue("@portName", portName);
+            command.Parameters.AddWithValue("@id", itemId);
+            await command.ExecuteNonQueryAsync();
+        }
+
+        public async Task UpdateTaskStatusAsync(int taskId, string status)
+        {
+            using var connection = new SqliteConnection(_connectionString);
+            await connection.OpenAsync();
+            using var command = new SqliteCommand("UPDATE SmsTasks SET Status = @status WHERE Id = @id", connection);
+            command.Parameters.AddWithValue("@status", status);
+            command.Parameters.AddWithValue("@id", taskId);
+            await command.ExecuteNonQueryAsync();
         }
     }
 }
