@@ -5,3 +5,5 @@
 *.suo
 *.sln.docstates
 .vs/
+
+publish/

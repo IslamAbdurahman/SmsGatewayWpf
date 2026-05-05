@@ -26,12 +26,25 @@ namespace SmsGatewayApp.ViewModels
 
             StartSendingCommand = new AsyncRelayCommand(async _ => await StartSendingAsync(), _ => CanStartSending());
             CancelSendingCommand = new RelayCommand(_ => CancelSending(), _ => IsSending);
-            RefreshPortsCommand = new RelayCommand(_ => LoadPorts());
+            RefreshPortsCommand = new AsyncRelayCommand(async _ => await LoadPortsAsync());
             TestConnectionCommand = new AsyncRelayCommand(async _ => await TestConnectionAsync(), _ => SelectedPort != null);
             ClearModemMemoryCommand = new AsyncRelayCommand(async _ => await ClearModemMemoryAsync(), _ => SelectedPort != null && !IsBusy);
 
-            LoadPorts();
-            _ = LoadDataAsync();
+            _ = InitializeAsync();
+        }
+
+        private async Task InitializeAsync()
+        {
+            IsBusy = true;
+            StatusMessage = "Yuklanmoqda...";
+            
+            var dataTask = LoadDataAsync();
+            var portTask = LoadPortsAsync();
+
+            await Task.WhenAll(dataTask, portTask);
+
+            IsBusy = false;
+            StatusMessage = "Tayyor";
         }
 
         #region Properties
@@ -121,10 +134,11 @@ namespace SmsGatewayApp.ViewModels
             foreach (var t in templates) Templates.Add(t);
         }
 
-        private void LoadPorts()
+        private async Task LoadPortsAsync()
         {
+            var ports = await _smsService.GetAvailablePortsAsync();
             AvailablePorts.Clear();
-            foreach (var p in _smsService.GetAvailablePorts()) AvailablePorts.Add(p);
+            foreach (var p in ports) AvailablePorts.Add(p);
             if (AvailablePorts.Any()) SelectedPort = AvailablePorts[0];
         }
 

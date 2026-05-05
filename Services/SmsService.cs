@@ -22,63 +22,72 @@ namespace SmsGatewayApp.Services
             _voiceService = voiceService;
         }
 
-        public List<SerialPortInfo> GetAvailablePorts()
+        public async Task<List<SerialPortInfo>> GetAvailablePortsAsync()
         {
-            var ports = new List<SerialPortInfo>();
-            try
+            return await Task.Run(() =>
             {
-                using (var searcher = new System.Management.ManagementObjectSearcher("SELECT * FROM Win32_PnPEntity WHERE Caption LIKE '%(COM%)'"))
+                var ports = new List<SerialPortInfo>();
+                var audioDevices = _voiceService.GetAudioDevices();
+
+                try
                 {
-                    foreach (var port in searcher.Get())
+                    using (var searcher = new System.Management.ManagementObjectSearcher("SELECT * FROM Win32_PnPEntity WHERE Caption LIKE '%(COM%)'"))
                     {
-                        var caption = port["Caption"]?.ToString();
-                        if (caption != null)
+                        foreach (var port in searcher.Get())
                         {
-                            var match = System.Text.RegularExpressions.Regex.Match(caption, @"\((COM\d+)\)");
-                            if (match.Success)
+                            var caption = port["Caption"]?.ToString();
+                            if (caption != null)
                             {
-                                var info = new SerialPortInfo
+                                var match = System.Text.RegularExpressions.Regex.Match(caption, @"\((COM\d+)\)");
+                                if (match.Success)
                                 {
-                                    PortName = match.Groups[1].Value,
-                                    DisplayName = caption
-                                };
-                                info.AvailableAudioDevices.AddRange(_voiceService.GetAudioDevices());
-                                ports.Add(info);
+                                    var info = new SerialPortInfo
+                                    {
+                                        PortName = match.Groups[1].Value,
+                                        DisplayName = caption
+                                    };
+                                    info.AvailableAudioDevices.AddRange(audioDevices);
+                                    ports.Add(info);
+                                }
                             }
                         }
                     }
                 }
-            }
-            catch
-            {
-                // Fallback to simple port names if WMI fails
-                foreach (var name in SerialPort.GetPortNames())
+                catch
                 {
-                    ports.Add(new SerialPortInfo { PortName = name, DisplayName = "Unknown Device" });
+                    // Fallback to simple port names if WMI fails
+                    foreach (var name in SerialPort.GetPortNames())
+                    {
+                        var info = new SerialPortInfo { PortName = name, DisplayName = "Unknown Device" };
+                        info.AvailableAudioDevices.AddRange(audioDevices);
+                        ports.Add(info);
+                    }
                 }
-            }
-            
-            // If no ports found via WMI but some exist
-            if (ports.Count == 0)
-            {
-                foreach (var name in SerialPort.GetPortNames())
-                {
-                    ports.Add(new SerialPortInfo { PortName = name, DisplayName = "Serial Port" });
-                }
-            }
 
-            // COM port raqami bo'yicha tartiblash (COM2, COM10 dan oldin chiqishi uchun)
-            ports = ports.OrderBy(p => 
-            {
-                if (p.PortName.StartsWith("COM", StringComparison.OrdinalIgnoreCase) && 
-                    int.TryParse(p.PortName.Substring(3), out int num))
+                // If no ports found via WMI but some exist
+                if (ports.Count == 0)
                 {
-                    return num;
+                    foreach (var name in SerialPort.GetPortNames())
+                    {
+                        var info = new SerialPortInfo { PortName = name, DisplayName = "Serial Port" };
+                        info.AvailableAudioDevices.AddRange(audioDevices);
+                        ports.Add(info);
+                    }
                 }
-                return int.MaxValue;
-            }).ToList();
 
-            return ports;
+                // COM port raqami bo'yicha tartiblash (COM2, COM10 dan oldin chiqishi uchun)
+                ports = ports.OrderBy(p =>
+                {
+                    if (p.PortName.StartsWith("COM", StringComparison.OrdinalIgnoreCase) &&
+                        int.TryParse(p.PortName.Substring(3), out int num))
+                    {
+                        return num;
+                    }
+                    return int.MaxValue;
+                }).ToList();
+
+                return ports;
+            });
         }
 
         public async Task<bool> SendSmsAsync(string portName, string phoneNumber, string message, CancellationToken cancellationToken = default)

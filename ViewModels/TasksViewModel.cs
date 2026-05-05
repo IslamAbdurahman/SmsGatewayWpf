@@ -34,8 +34,16 @@ namespace SmsGatewayApp.ViewModels
             CancelProcessingCommand = new RelayCommand(_ => CancelProcessing(), _ => IsProcessing);
             TestAudioCommand = new AsyncRelayCommand(async p => await TestAudioAsync(p as SerialPortInfo));
             
-            LoadPorts();
-            _ = LoadTasksAsync();
+            _ = InitializeAsync();
+        }
+
+        private async Task InitializeAsync()
+        {
+            StatusMessage = "Yuklanmoqda...";
+            var tasksTask = LoadTasksAsync();
+            var portsTask = LoadPortsAsync();
+            await Task.WhenAll(tasksTask, portsTask);
+            StatusMessage = "Tayyor";
         }
 
         #region Properties
@@ -132,10 +140,11 @@ namespace SmsGatewayApp.ViewModels
             }
         }
 
-        private void LoadPorts()
+        private async Task LoadPortsAsync()
         {
+            var ports = await _smsService.GetAvailablePortsAsync();
             AvailablePorts.Clear();
-            foreach (var p in _smsService.GetAvailablePorts()) AvailablePorts.Add(p);
+            foreach (var p in ports) AvailablePorts.Add(p);
             if (AvailablePorts.Any()) AvailablePorts[0].IsSelected = true;
         }
 

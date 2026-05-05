@@ -23,7 +23,9 @@
    ```
 
 3. **Ma'lumotlar bazasi**:
-   Dastur birinchi marta ishga tushganda `sms_gateway.db` faylini avtomatik yaratadi. Hech qanday qo'lda SQL kod ishlatish shart emas.
+   Dastur ma'lumotlar bazasini `%LOCALAPPDATA%\SmsGatewayApp\sms_gateway.db` manzilida saqlaydi. 
+   - **Default holatga qaytarish**: Agar bazani tozalab, "toza" holatga keltirmoqchi bo'lsangiz, yuqoridagi manzildagi faylni o'chirib tashlang. Dastur keyingi ishga tushishda uni yangidan (bo'sh holda) yaratadi.
+   - **Build uchun eslatma**: Loyihani tarqatishdan oldin (publish qilishda), bazaning default (bo'sh) holatda bo'lishini ta'minlash uchun `%LOCALAPPDATA%` dagi faylni o'chirib, keyin yig'ish tavsiya etiladi.
 
 4. **Loyihani yig'ish (Build)**:
    ```bash
@@ -34,6 +36,13 @@
    ```bash
    dotnet run
    ```
+
+6. **📦 EXE (Publish) qilish**:
+   Dasturni bitta mustaqil `.exe` fayl holatiga keltirish uchun quyidagi buyruqni ishlating:
+   ```bash
+   dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:PublishReadyToRun=true -p:IncludeNativeLibrariesForSelfExtract=true --output ./publish
+   ```
+   Tayyor fayl `./publish/SmsGatewayApp.exe` manzilida bo'ladi.
 
 ## 📱 Uskunani (Modemni) sozlash
 
