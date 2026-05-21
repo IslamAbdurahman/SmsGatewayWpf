@@ -100,7 +100,7 @@ namespace SmsGatewayApp.Services
 
                 try
                 {
-                    return await Task.Run(() =>
+                    bool sent = await Task.Run(() =>
                     {
                         using (var port = new SerialPort(portName))
                         {
@@ -140,11 +140,14 @@ namespace SmsGatewayApp.Services
                             return response.Contains("OK") || response.Contains("+CMGS:");
                         }
                     }, cancellationToken);
+
+                    if (sent) return true; // Success — no need to try next baud rate
+                    // else fall through to try next baud rate
                 }
                 catch
                 {
                     if (cancellationToken.IsCancellationRequested) return false;
-                    continue; // Try next baud rate
+                    // Try next baud rate
                 }
             }
             return false;
@@ -307,7 +310,8 @@ namespace SmsGatewayApp.Services
                         await _db.UpdateTaskItemStatusAsync(item.Id, status, !success, displayName.DisplayName);
                         
                         // History (Tarix) ga qo'shish
-                        var contactId = await _db.GetContactIdByPhoneAsync(item.PhoneNumber);
+                        // Normalize phone before lookup so it matches the stored format
+                        var contactId = await _db.GetContactIdByPhoneAsync(NormalizePhoneNumber(item.PhoneNumber));
                         if (contactId.HasValue)
                         {
                             await _db.AddHistoryAsync(contactId.Value, item.Message, status);

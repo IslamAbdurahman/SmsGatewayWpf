@@ -208,8 +208,10 @@ namespace SmsGatewayApp.ViewModels
                 });
             }, _cts.Token);
 
-            await _db.UpdateTaskStatusAsync(SelectedTask.Id, "Completed"); // Or check if all items are sent
-            
+            // Only mark Completed if the user did NOT cancel the operation
+            if (!_cts.Token.IsCancellationRequested)
+                await _db.UpdateTaskStatusAsync(SelectedTask.Id, "Completed");
+
             IsProcessing = false;
             ProcessingTaskId = null;
             StatusMessage = _cts.Token.IsCancellationRequested ? "Bekor qilindi" : "Yakunlandi";
