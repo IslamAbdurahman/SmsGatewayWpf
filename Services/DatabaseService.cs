@@ -183,6 +183,20 @@ namespace SmsGatewayApp.Services
 
         // ── Contacts ────────────────────────────────────────────────────────────
 
+        /// <summary>Strips spaces, dashes, parentheses, etc. Keeps a leading '+' and all digits.</summary>
+        private static string NormalizePhone(string phone)
+        {
+            if (string.IsNullOrWhiteSpace(phone)) return string.Empty;
+            var sb = new System.Text.StringBuilder();
+            for (int i = 0; i < phone.Length; i++)
+            {
+                char c = phone[i];
+                if (char.IsDigit(c) || (i == 0 && c == '+'))
+                    sb.Append(c);
+            }
+            return sb.ToString();
+        }
+
         public async Task BulkInsertContactsAsync(int groupId, List<(string Phone, string? Name)> contacts)
         {
             using var connection = new SqliteConnection(_connectionString);
@@ -199,7 +213,7 @@ namespace SmsGatewayApp.Services
                 foreach (var contact in contacts)
                 {
                     command.Parameters["@groupId"].Value = groupId;
-                    command.Parameters["@phone"].Value = contact.Phone;
+                    command.Parameters["@phone"].Value = NormalizePhone(contact.Phone);
                     command.Parameters["@name"].Value = (object?)contact.Name ?? DBNull.Value;
                     await command.ExecuteNonQueryAsync();
                 }
@@ -234,7 +248,7 @@ namespace SmsGatewayApp.Services
             using var command = new SqliteCommand(
                 "INSERT INTO SmsContacts (GroupId, Phone, Name) VALUES (@groupId, @phone, @name)", connection);
             command.Parameters.AddWithValue("@groupId", groupId);
-            command.Parameters.AddWithValue("@phone", phone);
+            command.Parameters.AddWithValue("@phone", NormalizePhone(phone));
             command.Parameters.AddWithValue("@name", (object?)name ?? DBNull.Value);
             await command.ExecuteNonQueryAsync();
         }
@@ -274,10 +288,23 @@ namespace SmsGatewayApp.Services
 
         public async Task<int?> GetContactIdByPhoneAsync(string phone)
         {
+            var normalized = NormalizePhone(phone);
+            if (string.IsNullOrEmpty(normalized)) return null;
+
             using var connection = new SqliteConnection(_connectionString);
             await connection.OpenAsync();
-            using var command = new SqliteCommand("SELECT Id FROM SmsContacts WHERE Phone = @phone LIMIT 1", connection);
-            command.Parameters.AddWithValue("@phone", phone);
+            // Match against both stored-as-normalized and stored-as-raw formats
+            using var command = new SqliteCommand(
+                @"SELECT Id FROM SmsContacts
+                  WHERE NormalizePhone(Phone) = @phone
+                  LIMIT 1", connection);
+            // SQLite doesn't have a built-in NormalizePhone; use REPLACE chain instead
+            command.CommandText =
+                @"SELECT Id FROM SmsContacts
+                  WHERE REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(Phone,' ',''),'-',''),'(',''),')',''),'+','') 
+                      = REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(@phone,' ',''),'-',''),'(',''),')',''),'+','')
+                  LIMIT 1";
+            command.Parameters.AddWithValue("@phone", normalized);
             var result = await command.ExecuteScalarAsync();
             if (result != null && result != DBNull.Value)
                 return Convert.ToInt32(result);
